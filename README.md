@@ -1,2 +1,0 @@
-# sudoku
-Simply Sudoku App

@@ -5,17 +5,15 @@ import const
 
 def main():
     global screen
-    screen = pygame.display.set_mode((const.WINDOWWIDTH, const.WINDOWHEIGHT))
+    screen = pygame.display.set_mode((const.WINDOWWIDTH+1, const.WINDOWHEIGHT+1))
     pygame.display.set_caption('Sudoku')
-    #screen.fill(const.WHITE)
+    screen.fill(const.WHITE)
     grid.drawGrid(screen)
     playboard = grid.Grid()
     pygame.display.flip()
     running = True
-    print("Cell:",const.CELLSIZE)
-    rectangle = (30,30,63,63)
-    pygame.draw.rect(screen,const.WHITE,rectangle,5)
-    #gameSurface = pygame.surface.Surface(int(const.WINDOWWIDTH),int(const.WINDOWHEIGHT))
+
+
     
 
     while running: #Main Loop

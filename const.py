@@ -12,7 +12,13 @@ NOTESIZE = CELLSIZE / 3
 #Colors
 WHITE    =(255,255,255)
 BLACK    =(  0,  0,  0)
+
+#Light mode Colors
 GREY     =(220,220,220)
-BLUE     =(180,213,254)
+LIGHTGREY=(235,235,235)
+BLUE     =(210,230,255)
+
+#Dark mode Colors
+
 
 print("Finished")

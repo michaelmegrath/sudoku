@@ -17,15 +17,16 @@ def drawGrid(screen):
 
     for x in range(0, int(const.WINDOWWIDTH), int(const.BOXSIZE)):
         pygame.draw.line(screen, const.BLACK, (x,0),(x,const.WINDOWHEIGHT))
-    pygame.draw.line(screen, const.BLACK,(const.WINDOWWIDTH-1,0),(const.WINDOWWIDTH-1,const.WINDOWHEIGHT))
+    pygame.draw.line(screen, const.BLACK,(const.WINDOWWIDTH,0),(const.WINDOWWIDTH,const.WINDOWHEIGHT))
     for y in range(0,int(const.WINDOWHEIGHT), int(const.BOXSIZE)):
         pygame.draw.line(screen, const.BLACK, (0,y), (const.WINDOWWIDTH,y))
-    pygame.draw.line(screen, const.BLACK,(0,const.WINDOWHEIGHT-1),(const.WINDOWWIDTH,const.WINDOWHEIGHT-1))
+    pygame.draw.line(screen, const.BLACK,(0,const.WINDOWHEIGHT),(const.WINDOWWIDTH,const.WINDOWHEIGHT))
     return None
 
-def selectCell(screen,coord):
-    print("works")
-    pygame.draw.rect(screen,const.BLUE,(0,0,const.CELLSIZE,const.CELLSIZE),0)
+def toggleSelect(screen,coord,color):
+    pygame.draw.rect(screen,color,(coord[0]*const.CELLSIZE+1,coord[1]*const.CELLSIZE+1,const.CELLSIZE-1,const.CELLSIZE-1),0)
+    pygame.display.flip()
+
     #pygame.draw.rect(screen,const.BLUE,(coord[0]*const.CELLSIZE,coord[1]*const.CELLSIZE,const.CELLSIZE,const.CELLSIZE),)
     return None
 
@@ -41,10 +42,11 @@ class Grid:
     def selectCell(self,x,screen):
         if(self.selected != (-1,-1)): # If there is something selected
             #undo graphical selection for current selection
+            toggleSelect(screen,self.selected,const.WHITE)
             pass
             
         self.selected = (int(x[0]/const.CELLSIZE),int(x[1]/const.CELLSIZE))
-        selectCell(screen,self.selected)
+        toggleSelect(screen,self.selected,const.BLUE)
         #self.gridArray[self.selected[0]][self.selected[1]]  How to reference the selected cell
         print(self.selected)
 

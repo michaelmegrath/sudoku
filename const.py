@@ -13,5 +13,6 @@ NOTESIZE = CELLSIZE / 3
 WHITE    =(255,255,255)
 BLACK    =(  0,  0,  0)
 GREY     =(220,220,220)
+BLUE     =(180,213,254)
 
 print("Finished")

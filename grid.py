@@ -25,7 +25,7 @@ def drawGrid(screen):
 
 def toggleSelect(screen,coord,color):
     pygame.draw.rect(screen,color,(coord[0]*const.CELLSIZE+1,coord[1]*const.CELLSIZE+1,const.CELLSIZE-1,const.CELLSIZE-1),0)
-    pygame.display.flip()
+    #pygame.display.flip()
 
     #pygame.draw.rect(screen,const.BLUE,(coord[0]*const.CELLSIZE,coord[1]*const.CELLSIZE,const.CELLSIZE,const.CELLSIZE),)
     return None
@@ -39,6 +39,13 @@ class Grid:
         self.selected = selected
         #add feature that puts in givens
     
+    def isSelected(self):
+        if(self.selected == (-1,-1)):
+            return False
+        else:
+            return True
+
+    
     def selectCell(self,x,screen):
         if(self.selected != (-1,-1)): # If there is something selected
             #undo graphical selection for current selection
@@ -49,6 +56,28 @@ class Grid:
         toggleSelect(screen,self.selected,const.BLUE)
         #self.gridArray[self.selected[0]][self.selected[1]]  How to reference the selected cell
         print(self.selected)
+
+    def moveSelected(self,direction,screen):
+        if(direction == 'l' and self.selected[0] > 0):
+            toggleSelect(screen,self.selected,const.WHITE)
+            self.selected = (self.selected[0]-1,self.selected[1])
+            toggleSelect(screen,self.selected,const.BLUE)
+            return None
+        if(direction == 'r' and self.selected[0] < 8):
+            toggleSelect(screen,self.selected,const.WHITE)
+            self.selected = (self.selected[0]+1,self.selected[1])
+            toggleSelect(screen,self.selected,const.BLUE)
+            return None
+        if(direction == 'u' and self.selected[1] > 0):
+            toggleSelect(screen,self.selected,const.WHITE)
+            self.selected = (self.selected[0],self.selected[1]-1)
+            toggleSelect(screen,self.selected,const.BLUE)
+            return None
+        if(direction == 'd' and self.selected[1] < 8):
+            toggleSelect(screen,self.selected,const.WHITE)
+            self.selected = (self.selected[0],self.selected[1]+1)
+            toggleSelect(screen,self.selected,const.BLUE)
+            return None
 
 
 

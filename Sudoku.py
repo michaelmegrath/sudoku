@@ -4,18 +4,26 @@ import const
 
 
 def main():
+    #Constructing Screen
     global screen
     screen = pygame.display.set_mode((const.WINDOWWIDTH+1, const.WINDOWHEIGHT+1))
     pygame.display.set_caption('Sudoku')
-    screen.fill(const.WHITE)
-    grid.drawGrid(screen)
-    playboard = grid.Grid()
-    pygame.display.flip()
-    running = True
-    game_surf = pygame.surface.Surface((const.WINDOWWIDTH+1, const.WINDOWHEIGHT+1))
-
     
-
+    #Fill in Screen
+    #screen.fill(const.WHITE)
+    #grid.drawGrid(screen)
+    playboard = grid.GridController()
+    playboard.render(screen)
+    
+    #Display contents of screen
+    pygame.display.flip()
+    
+    
+    #game_surf = pygame.surface.Surface(((2*const.WINDOWWIDTH)+1, const.WINDOWHEIGHT+1))
+    #Sidebar, implement later
+    
+    
+    running = True #Variable for gameloop
     while running: #Main Loop
         pygame.display.update()
         

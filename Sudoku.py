@@ -74,5 +74,9 @@ def main():
                     playboard.writeNumber(screen,8)
                 if event.key == pygame.K_9:
                     playboard.writeNumber(screen,9)
+
+                #Delete Cell
+                if event.key == pygame.K_BACKSPACE:
+                    playboard.eraseNumber(screen)
 if __name__=='__main__':
     main()

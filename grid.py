@@ -106,6 +106,10 @@ class GridController:
         self.gridArray[self.selected[0]][self.selected[1]].changeCell(number)
         self.gridgraph.drawNumber(screen,number,self.selected)
         return None
+    def eraseNumber(self,screen):
+        self.gridArray[self.selected[0]][self.selected[1]].changeCell(0)
+        self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
+
 
     def returnNumber(self): #Returns Cell Number
         return self.gridArray[self.selected[0]][self.selected[1]].getNumber()

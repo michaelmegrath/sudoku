@@ -34,7 +34,7 @@ def main():
             #Selecting Cells w/ mouse
             elif event.type == pygame.MOUSEBUTTONUP:
                 playboard.selectCell(pygame.mouse.get_pos(),screen)
-                playboard.writeNumber(screen,playboard.returnNumber())
+                playboard.writeNumber(screen,playboard.returnNumber(),const.BLUE)
             
             elif event.type == pygame.KEYDOWN:
                 

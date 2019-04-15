@@ -4,6 +4,11 @@ import const
 
 
 def main():
+    #Test Code
+
+    
+    
+    print("Running!")
     #Constructing Screen
     global screen
     screen = pygame.display.set_mode((const.WINDOWWIDTH+1, const.WINDOWHEIGHT+1))
@@ -26,6 +31,7 @@ def main():
     running = True #Variable for gameloop
     while running: #Main Loop
         pygame.display.update()
+        
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -58,25 +64,57 @@ def main():
                 #Number Input
                 if event.key == pygame.K_1:
                     playboard.writeNumber(screen,1)
+                    playboard.saveNumber(1)
+                    playboard.checkCRB()
+                    playboard.highlightDuplicates(screen)
                 if event.key == pygame.K_2:
                     playboard.writeNumber(screen,2)
+                    playboard.saveNumber(2)
+                    playboard.checkCRB()
+                    playboard.highlightDuplicates(screen)
                 if event.key == pygame.K_3:
                     playboard.writeNumber(screen,3)
+                    playboard.saveNumber(3)
+                    playboard.checkCRB()
+                    playboard.highlightDuplicates(screen)
                 if event.key == pygame.K_4:
                     playboard.writeNumber(screen,4)
+                    playboard.saveNumber(4)
+                    playboard.checkCRB()
+                    playboard.highlightDuplicates(screen)
                 if event.key == pygame.K_5:
                     playboard.writeNumber(screen,5)
+                    playboard.saveNumber(5)
+                    playboard.checkCRB()
+                    playboard.highlightDuplicates(screen)
                 if event.key == pygame.K_6:
                     playboard.writeNumber(screen,6)
+                    playboard.saveNumber(6)
+                    playboard.checkCRB()
+                    playboard.highlightDuplicates(screen)
                 if event.key == pygame.K_7:
                     playboard.writeNumber(screen,7)
+                    playboard.saveNumber(7)
+                    playboard.checkCRB()
+                    playboard.highlightDuplicates(screen)
                 if event.key == pygame.K_8:
                     playboard.writeNumber(screen,8)
+                    playboard.saveNumber(8)
+                    playboard.checkCRB()
+                    playboard.highlightDuplicates(screen)
                 if event.key == pygame.K_9:
                     playboard.writeNumber(screen,9)
+                    playboard.saveNumber(9)
+                    playboard.checkCRB()
+                    playboard.highlightDuplicates(screen)
 
                 #Delete Cell
                 if event.key == pygame.K_BACKSPACE:
-                    playboard.eraseNumber(screen)
+                    playboard.eraseNumberGrid(screen)
+                    playboard.eraseNumberArray()
+                    if(playboard.gridArray[playboard.returnSelected(0)][playboard.returnSelected(1)].returnDuplicate()):
+                        playboard.checkCRB()
+                    playboard.highlightDuplicates(screen)
+    print("Sudoku Closed.")
 if __name__=='__main__':
     main()

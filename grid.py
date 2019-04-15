@@ -12,10 +12,10 @@ print("Importing grid...")
 
 class GridGraphical:
 
-    def drawNumber(self,screen,number,coord):
+    def drawNumber(self,screen,number,coord,color = const.BLACK): #check pygame antialias settings
         if(number == 0):
             return None
-        label = const.NUFONT.render(str(number), False, const.BLACK)
+        label = const.NUFONT.render(str(number), False, color)
         screen.blit(label,(coord[0]*const.CELLSIZE+((1/4)*const.CELLSIZE),coord[1]*const.CELLSIZE+((1/8)*const.CELLSIZE)))
         return None
     
@@ -42,38 +42,39 @@ class GridGraphical:
 
 
 class GridController:
+    #Object Variables
     gridArray = [[cell.Cell((j,i)) for j in range(9)] for i in range(9)]
+    #self.gridArray[self.selected[0]][self.selected[1]]  How to reference the selected cell
     selected = (-1,-1)
+    #self.selected[0]
     gridgraph = GridGraphical()
+    #self.gridgraph.placeholder(args)
+    
+    #Constructor & render functions
     def _init_(self):
         self.selected = selected
 
-        #add feature that puts in givens
-    
     def render(self,screen): #Renders gameboard
         screen.fill(const.WHITE)
         self.gridgraph.drawGrid(screen)
+        #add feature that puts in givens
         return None
     
-    
+    #Selection functions
     def isSelected(self): #If there is a selected square return true else return false
         if(self.selected == (-1,-1)):
             return False
         else:
             return True
-
     
     def selectCell(self,x,screen): # Selects Cell
         if(self.selected != (-1,-1)): # If there is something selected
             #undo graphical selection for current selection
             self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
-            self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
-  
-            
+        self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
         self.selected = (int(x[0]/const.CELLSIZE),int(x[1]/const.CELLSIZE))
         self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
         return None
-        #self.gridArray[self.selected[0]][self.selected[1]]  How to reference the selected cell
 
     def moveSelected(self,direction,screen):
         if(direction == 'l' and self.selected[0] > 0): #Left Arrow control
@@ -81,39 +82,109 @@ class GridController:
             self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
             self.selected = (self.selected[0]-1,self.selected[1])
             self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
+            self.highlightDuplicates(screen)
             return None
         if(direction == 'r' and self.selected[0] < 8): #Right Arrow control
             self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
             self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
             self.selected = (self.selected[0]+1,self.selected[1])
             self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
+            self.highlightDuplicates(screen)
             return None
         if(direction == 'u' and self.selected[1] > 0): #Up Arrow control
             self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
             self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
             self.selected = (self.selected[0],self.selected[1]-1)
             self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
+            self.highlightDuplicates(screen)
             return None
         if(direction == 'd' and self.selected[1] < 8):#Down Arrow control
             self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
             self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
             self.selected = (self.selected[0],self.selected[1]+1)
             self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
+            self.highlightDuplicates(screen)
             return None
 
-    
+    #Number/Cell functions
     def writeNumber(self,screen,number,color = const.BLUE): #Write and save number
         if(self.gridArray[self.selected[0]][self.selected[1]].getNumber() != 0):
-            self.eraseNumber(screen,color)
-        self.gridArray[self.selected[0]][self.selected[1]].changeCell(number)
-        self.gridgraph.drawNumber(screen,number,self.selected)
+            self.eraseNumberGrid(screen,color)
+    
+        if(self.gridArray[self.selected[0]][self.selected[1]].returnDuplicate() == False):
+            self.gridgraph.drawNumber(screen,number,self.selected)
+        else:
+            self.gridgraph.drawNumber(screen,number,self.selected,const.RED)
         return None
-    def eraseNumber(self,screen,color = const.BLUE):
-        self.gridArray[self.selected[0]][self.selected[1]].changeCell(0)
+    def saveNumber(self,number):
+        self.gridArray[self.selected[0]][self.selected[1]].changeCell(number)
+    
+    
+    def eraseNumberGrid(self,screen,color = const.BLUE):
         self.gridgraph.toggleSelect(screen,self.selected,color)
-
+        
+        return None
+    def eraseNumberArray(self):
+        self.gridArray[self.selected[0]][self.selected[1]].changeCell(0)
 
     def returnNumber(self): #Returns Cell Number
         return self.gridArray[self.selected[0]][self.selected[1]].getNumber()
+
+    def returnSelected(self,index):
+        return self.selected[index]
+
     
+    
+    
+    
+    #Check Column, Row, and Box
+    
+    def toggleList(self,CRB,index): #Come up with a better name
+        count = [0,0,0,0,0,0,0,0,0]
+        for i in range(0,8,1):
+            for j in range(i+1,9,1):
+                if(CRB == 'c'):
+                    if(self.gridArray[index][i].getNumber() == self.gridArray[index][j].getNumber() and self.gridArray[index][j].getNumber() != 0):
+
+                        count[i] = 1
+                        count[j] = 1
+        if(CRB == 'c'):
+            for k in range(0,9,1):
+                if(count[k] == 1):
+                    self.gridArray[index][k].toggleDuplicate()
+                else:
+                    self.gridArray[index][k].toggleDuplicate(False)
+
+
+    def checkCRB(self): #Come up with a better name
+        self.toggleList('c',self.selected[0])
+        #self.toggleList('r',self.selected[1])
+        #Code for Box
+    
+    def checkTotalList(self):
+        for i in range(0,9,1):
+            self.toggleList('c',i)
+        #self.toggleList('r',i)
+        #self.toggleList('b',i)
+
+        return None
+
+
+
+    #Highlight duplicates function
+    def highlightDuplicates(self,screen):
+        for x in range(0,9,1):
+            for y in range(0,9,1):
+                if(self.gridArray[x][y].returnDuplicate()==True):
+                    self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),const.RED)
+                else:
+                    self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),const.BLACK)
+        if(self.gridArray[self.selected[0]][self.selected[1]].returnDuplicate()):
+            self.gridgraph.toggleSelect(screen,(self.selected[0],self.selected[1]),const.BLUE)
+            self.gridgraph.drawNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),(self.selected[0],self.selected[1]),const.RED)
+
+
+
+
+#create debug functions
 print("Finished")

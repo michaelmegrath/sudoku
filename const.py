@@ -15,20 +15,23 @@ NOTESIZE = CELLSIZE / 3
 
 #Font
 pygame.font.init()
+#fontList = pygame.font.get_fonts()
+#print(fontList)
 #Number Font
-NUFONT = pygame.font.SysFont("Comic Sans MS", 90)
+NUFONT = pygame.font.SysFont("arial", 90)
 #Note Font
 NOFONT = pygame.font.SysFont("Comic Sans MS", 30)
 
 #Colors
 WHITE    =(255,255,255)
 BLACK    =(  0,  0,  0)
+RED      =(255, 33, 33) #Fix color
 
 #Light mode Colors
 GREY     =(220,220,220)
 LIGHTGREY=(235,235,235)
 BLUE     =(210,230,255)
-
+#add Light blue for adjacent
 #Dark mode Colors
 
 

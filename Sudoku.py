@@ -6,44 +6,43 @@ import const
 def main():
     #Test Code
 
-    
-    
+
+
     print("Running!")
     #Constructing Screen
     global screen
     screen = pygame.display.set_mode((const.WINDOWWIDTH+1, const.WINDOWHEIGHT+1))
     pygame.display.set_caption('Sudoku')
-    
+
     #Fill in Screen
     #screen.fill(const.WHITE)
     #grid.drawGrid(screen)
     playboard = grid.GridController()
     playboard.render(screen)
-    
+
     #Display contents of screen
     pygame.display.flip()
-    
-    
-    #game_surf = pygame.surface.Surface(((2*const.WINDOWWIDTH)+1, const.WINDOWHEIGHT+1))
+
     #Sidebar, implement later
-    
-    
+    #game_surf = pygame.surface.Surface(((2*const.WINDOWWIDTH)+1, const.WINDOWHEIGHT+1))
+
+
     running = True #Variable for gameloop
     while running: #Main Loop
         pygame.display.update()
-        
-        
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            
+
             #Selecting Cells w/ mouse
             elif event.type == pygame.MOUSEBUTTONUP:
                 playboard.selectCell(pygame.mouse.get_pos(),screen)
                 playboard.writeNumber(screen,playboard.returnNumber(),const.BLUE)
-            
+
             elif event.type == pygame.KEYDOWN:
-                
+
                 #Arrow key Functionallity
                 if event.key == pygame.K_LEFT and playboard.isSelected():
                     playboard.moveSelected('l',screen)
@@ -57,10 +56,10 @@ def main():
                 if event.key == pygame.K_DOWN and playboard.isSelected():
                     playboard.moveSelected('d',screen)
                     playboard.writeNumber(screen,playboard.returnNumber())
-                
+
                 #add Shift click functionallity for notes here
-                
-                
+
+
                 #Number Input
                 if event.key == pygame.K_1:
                     playboard.writeNumber(screen,1)

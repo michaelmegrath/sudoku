@@ -1,3 +1,5 @@
+#This file contains all constants for the program
+
 import pygame
 print("Importing contants...")
 
@@ -15,10 +17,12 @@ NOTESIZE = CELLSIZE / 3
 
 #Font
 pygame.font.init()
-#fontList = pygame.font.get_fonts()
-#print(fontList)
+
+
 #Number Font
 NUFONT = pygame.font.SysFont("arial", 90)
+#NUFONT = pygame.font.Font("calibri.ttf", 70)
+
 #Note Font
 NOFONT = pygame.font.SysFont("Comic Sans MS", 30)
 

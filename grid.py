@@ -126,7 +126,7 @@ class GridController:
         if(self.gridArray[self.selected[0]][self.selected[1]].getNumber() != 0):
             self.eraseNumberGrid(screen,color)
 
-        if(self.gridArray[self.selected[0]][self.selected[1]].returnDuplicate() == False):
+        if(self.gridArray[self.selected[0]][self.selected[1]].returnIfAny() == False):
             self.gridgraph.drawNumber(screen,number,self.selected)
         else:
             self.gridgraph.drawNumber(screen,number,self.selected,const.RED)
@@ -169,26 +169,31 @@ class GridController:
         if(CRB == 'c'):
             for k in range(0,9,1):
                 if(count[k] == 1):
-                    self.gridArray[index][k].toggleDuplicate()
+                    self.gridArray[index][k].toggleDuplicate(0)
                 else:
-                    self.gridArray[index][k].toggleDuplicate(False)
-        #if(CRB == 'r'):
-        #  for k in range(0,9,1):
-        #       if(count[k] == 1):
-        #           self.gridArray[k][index].toggleDuplicate()
-        #       else:
-        #           self.gridArray[k][index].toggleDuplicate(False)
+                    self.gridArray[index][k].toggleDuplicate(0,False)
+                print(self.gridArray[index][k].returnDuplicate(0))
+            for k in range(0,9,1):
+                print(self.gridArray[index][k].returnDuplicate(0))
+#        if(CRB == 'r'):
+#            for k in range(0,9,1):
+#                if(count[k] == 1):
+#                    self.gridArray[k][index].toggleDuplicate(1)
+#            else:
+#                self.gridArray[k][index].toggleDuplicate(1,False)
 
 
     def checkCRB(self): #Come up with a better name
         self.toggleList('c',self.selected[0])
-    #self.toggleList('r',self.selected[1])
+
+
+#        self.toggleList('r',self.selected[1])
         #Code for Box
 
     def checkTotalList(self):
         for i in range(0,9,1):
             self.toggleList('c',i)
-        # self.toggleList('r',i)
+#            self.toggleList('r',i)
             #self.toggleList('b',i)
 
         return None
@@ -199,11 +204,11 @@ class GridController:
     def highlightDuplicates(self,screen):
         for x in range(0,9,1):
             for y in range(0,9,1):
-                if(self.gridArray[x][y].returnDuplicate()==True):
+                if(self.gridArray[x][y].returnIfAny()):
                     self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),const.RED)
                 else:
                     self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),const.BLACK)
-        if(self.gridArray[self.selected[0]][self.selected[1]].returnDuplicate()):
+        if(self.gridArray[self.selected[0]][self.selected[1]].returnIfAny()):
             self.gridgraph.toggleSelect(screen,(self.selected[0],self.selected[1]),const.BLUE)
             self.gridgraph.drawNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),(self.selected[0],self.selected[1]),const.RED)
 

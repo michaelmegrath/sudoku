@@ -110,9 +110,11 @@ def main():
                 #Delete Cell
                 if event.key == pygame.K_BACKSPACE:
                     playboard.eraseNumberGrid(screen)
-                    playboard.eraseNumberArray()
-                    if(playboard.gridArray[playboard.returnSelected(0)][playboard.returnSelected(1)].returnDuplicate()):
+                    print(playboard.gridArray[playboard.returnSelected(0)][playboard.returnSelected(1)].returnIfAny())
+                    if(playboard.gridArray[playboard.returnSelected(0)][playboard.returnSelected(1)].returnIfAny()):
                         playboard.checkCRB()
+                    playboard.eraseNumberArray()
+
                     playboard.highlightDuplicates(screen)
     print("Sudoku Closed.")
 if __name__=='__main__':

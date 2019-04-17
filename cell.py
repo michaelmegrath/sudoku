@@ -5,7 +5,7 @@
 #cellValue which holds the value of what is in the cell
 
 #duplicateFlag which holds the value True or False, based on
-#if other cells in the row, column, or box. The logic is controlled in grid.py
+#if other cells in the row, column, or box. The logic is controlled in grid.py ******UPDATE********
 
 
 
@@ -17,7 +17,7 @@ class Cell:
 
     #Object Variables
     cellValue = 0
-    duplicateFlag = False
+    duplicateFlag = [False,False,False]
 
 
     #Constructor
@@ -45,12 +45,19 @@ class Cell:
 
 
     #Duplicate Functions
-    def toggleDuplicate(self,turnOn = True): #turnOn - boolean that sets the value for the duplicateFlag automatically True
+    def toggleDuplicate(self,index,turnOn = True): #turnOn - boolean that sets the value for the duplicateFlag automatically True
         if(turnOn):
-            self.duplicateFlag = True
+            self.duplicateFlag[index] = True
+            return None
         else:
-            self.duplicateFlag = False
-        return None
+            self.duplicateFlag[index] = False
+            return None
 
-    def returnDuplicate(self):
-        return self.duplicateFlag #Returns boolean value of duplicateFlag
+    def returnDuplicate(self,index):
+        return self.duplicateFlag[index] #Returns boolean value of duplicateFlag
+
+    def returnIfAny(self):
+        if(self.duplicateFlag[0] or self.duplicateFlag[1] or self.duplicateFlag[2]):
+            return True
+        else:
+            return False

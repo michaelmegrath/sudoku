@@ -162,38 +162,34 @@ class GridController:
                     if(self.gridArray[index][i].getNumber() == self.gridArray[index][j].getNumber() and self.gridArray[index][j].getNumber() != 0):
                         count[i] = 1
                         count[j] = 1
-                #if(CRB == 'r'):
-                    #if(self.gridArray[i][index].getNumber() == self.gridArray[j][index].getNumber() and self.gridArray[j][index].getNumber() != 0):
-                    #   count[i] = 1
-                    #   count[j] = 1
+                if(CRB == 'r'):
+                    if(self.gridArray[i][index].getNumber() == self.gridArray[j][index].getNumber() and self.gridArray[j][index].getNumber() != 0):
+                       count[i] = 1
+                       count[j] = 1
+        print(count)
         if(CRB == 'c'):
             for k in range(0,9,1):
                 if(count[k] == 1):
                     self.gridArray[index][k].toggleDuplicate(0)
                 else:
                     self.gridArray[index][k].toggleDuplicate(0,False)
-                print(self.gridArray[index][k].returnDuplicate(0))
+        if(CRB == 'r'):
             for k in range(0,9,1):
-                print(self.gridArray[index][k].returnDuplicate(0))
-#        if(CRB == 'r'):
-#            for k in range(0,9,1):
-#                if(count[k] == 1):
-#                    self.gridArray[k][index].toggleDuplicate(1)
-#            else:
-#                self.gridArray[k][index].toggleDuplicate(1,False)
+                if(count[k] == 1):
+                    self.gridArray[k][index].toggleDuplicate(1)
+                else:
+                    self.gridArray[k][index].toggleDuplicate(1,False)
 
 
     def checkCRB(self): #Come up with a better name
         self.toggleList('c',self.selected[0])
-
-
-#        self.toggleList('r',self.selected[1])
+        self.toggleList('r',self.selected[1])
         #Code for Box
 
     def checkTotalList(self):
         for i in range(0,9,1):
             self.toggleList('c',i)
-#            self.toggleList('r',i)
+            self.toggleList('r',i)
             #self.toggleList('b',i)
 
         return None

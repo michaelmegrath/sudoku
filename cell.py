@@ -17,13 +17,14 @@ class Cell:
 
     #Object Variables
     cellValue = 0
-    duplicateFlag = [False,False,False]
+
 
 
     #Constructor
     def __init__(self, gridCoord):
         notesArray = [False,False,False,False,False,False,False,False,False]
         coord = gridCoord
+        self.duplicateFlag = [False,False,False]
 
     #Note Functions
     def toggleNote(self, note): #note - int that is the index for the note that needs to be toggled
@@ -48,10 +49,10 @@ class Cell:
     def toggleDuplicate(self,index,turnOn = True): #turnOn - boolean that sets the value for the duplicateFlag automatically True
         if(turnOn):
             self.duplicateFlag[index] = True
-            return None
+
         else:
             self.duplicateFlag[index] = False
-            return None
+        return None
 
     def returnDuplicate(self,index):
         return self.duplicateFlag[index] #Returns boolean value of duplicateFlag

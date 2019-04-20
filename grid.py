@@ -152,7 +152,7 @@ class GridController:
 
 
 
-    #Check Column, Row, and Box
+    #Check Column, Row, and Box, THIS ENTIRE SECTION NEEDS BETTER FUNCTION NAMES
 
     def toggleList(self,CRB,index): #Come up with a better name
         count = [0,0,0,0,0,0,0,0,0]
@@ -166,7 +166,13 @@ class GridController:
                     if(self.gridArray[i][index].getNumber() == self.gridArray[j][index].getNumber() and self.gridArray[j][index].getNumber() != 0):
                        count[i] = 1
                        count[j] = 1
-        print(count)
+                if(CRB == 'b'):
+                    boxArray = []
+                    self.populateBoxArray(boxArray,index)
+                    if(boxArray[i] == boxArray[j] and boxArray[j] != 0):
+                        count[i] = 1
+                        count[j] = 1
+
         if(CRB == 'c'):
             for k in range(0,9,1):
                 if(count[k] == 1):
@@ -179,20 +185,51 @@ class GridController:
                     self.gridArray[k][index].toggleDuplicate(1)
                 else:
                     self.gridArray[k][index].toggleDuplicate(1,False)
+        if(CRB == 'b'):
+            for k in range(0,9,1):
+                if(count[k] == 1):
+                    coord = self.returnCoordInBox(index,k)
+                    self.gridArray[coord[0]][coord[1]].toggleDuplicate(2)
+                else:
+                    coord = self.returnCoordInBox(index,k)
+                    self.gridArray[coord[0]][coord[1]].toggleDuplicate(2,False)
 
+
+
+    def returnCoordInBox(self,index,increment):
+        start = self.returnBox(index)
+        coord = [int(start[0] + (increment % 3)),int(start[1] + (increment - (increment % 3)) / 3)]
+        return coord
+
+
+    def returnSelectedBox(self):
+        x = self.selected[0] - (self.selected[0] % 3)
+        y = self.selected[1] - (self.selected[1] % 3)
+        return (y + ((x+3)/3)) - 1
+
+    def returnBox(self,index):
+        x = int((index % 3) * 3)
+        y = int(index - (index % 3))
+        return (x,y)
 
     def checkCRB(self): #Come up with a better name
         self.toggleList('c',self.selected[0])
         self.toggleList('r',self.selected[1])
-        #Code for Box
+        self.toggleList('b',self.returnSelectedBox())
 
-    def checkTotalList(self):
+    def checkTotalBoard(self):
         for i in range(0,9,1):
             self.toggleList('c',i)
             self.toggleList('r',i)
-            #self.toggleList('b',i)
+            self.toggleList('b',i)
 
         return None
+    def populateBoxArray(self,boxArray,index):
+        box = self.returnBox(index)
+        for y in range(box[1],box[1]+3,1):
+            for x in range(box[0],box[0]+3,1):
+                boxArray.append(self.gridArray[x][y].getNumber())
+
 
 
 

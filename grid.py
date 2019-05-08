@@ -8,6 +8,7 @@
 import pygame
 import const
 import cell
+import starter
 print("Importing grid...") #Terminal output
 
 
@@ -22,7 +23,7 @@ class GridGraphical:
     #number, int, to be printed
     #coord, tuple of two ints(EG: 0,0 or 8,8), that are coordinates of the cell to draw the number to
     #color, tuple of three ints(each int must not surpass 255), color that the number drawn
-    def drawNumber(self,screen,number,coord,color = const.BLACK):
+    def drawNumber(self,screen,number,coord,color = const.DARKGREY):
         if(number == 0):
             return None
         label = const.NUFONT.render(str(number), False, color)
@@ -60,18 +61,21 @@ class GridController:
     #Object Variables
     gridArray = [[cell.Cell((j,i)) for j in range(9)] for i in range(9)]
     #self.gridArray[self.selected[0]][self.selected[1]]  How to reference the selected cell
-    selected = (-1,-1)
+
     #self.selected[0]
     gridgraph = GridGraphical()
     #self.gridgraph.placeholder(args)
 
+
     #Constructor & render functions
-    def _init_(self):
-        self.selected = selected
+    def __init__(self):
+        self.selected = (-1,-1)
+        self.starters = starter.Starter()
 
     def render(self,screen): #Renders gameboard
         screen.fill(const.WHITE)
         self.gridgraph.drawGrid(screen)
+        self.getStarters(screen)
         #add feature that puts in givens
         return None
 
@@ -122,18 +126,22 @@ class GridController:
             return None
 
     #Number/Cell functions
-    def writeNumber(self,screen,number,color = const.BLUE): #Write and save number
+    def writeNumber(self,screen,number,color = const.BLUE): #Write and save number OVERHAUL THIS FUNCTION
         if(self.gridArray[self.selected[0]][self.selected[1]].getNumber() != 0):
             self.eraseNumberGrid(screen,color)
 
-        if(self.gridArray[self.selected[0]][self.selected[1]].returnIfAny() == False):
-            self.gridgraph.drawNumber(screen,number,self.selected)
-        else:
+        if(self.gridArray[self.selected[0]][self.selected[1]].returnIfAny() == True):
             self.gridgraph.drawNumber(screen,number,self.selected,const.RED)
+        elif(self.gridArray[self.selected[0]][self.selected[1]].starter == True):
+            self.gridgraph.drawNumber(screen,number,self.selected,const.BLACK)
+        else:
+            self.gridgraph.drawNumber(screen,number,self.selected)
         return None
     def saveNumber(self,number):
-        self.gridArray[self.selected[0]][self.selected[1]].changeCell(number)
-
+        if(self.gridArray[self.selected[0]][self.selected[1]].changeCell(number)):
+            return True
+        else:
+            return False
 
     def eraseNumberGrid(self,screen,color = const.BLUE):
         self.gridgraph.toggleSelect(screen,self.selected,color)
@@ -239,14 +247,32 @@ class GridController:
             for y in range(0,9,1):
                 if(self.gridArray[x][y].returnIfAny()):
                     self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),const.RED)
-                else:
+                elif(self.gridArray[x][y].returnStarter()):
                     self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),const.BLACK)
+                else:
+                    self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y))
         if(self.gridArray[self.selected[0]][self.selected[1]].returnIfAny()):
             self.gridgraph.toggleSelect(screen,(self.selected[0],self.selected[1]),const.BLUE)
             self.gridgraph.drawNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),(self.selected[0],self.selected[1]),const.RED)
 
 
+    def getStarters(self,screen):
+        for x in range(0,9,1):
+            for y in range(0,9,1):
+                if(self.starters.grid[x][y] == 0):
+                    pass
+                elif(self.starters.grid[x][y] > 9):
+                    pass
+                else:
+                    self.gridArray[x][y].setStarter(self.starters.grid[x][y])
+                    self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),const.BLACK)
 
 
 #create debug functions
+
+    def isStarter(self):
+        for x in range(0,9,1):
+            for y in range(0,9,1):
+                print(self.gridArray[x][y].returnStarter())
+
 print("Finished")#terminal output

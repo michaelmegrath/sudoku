@@ -16,20 +16,25 @@ import const #const.py includes all of the Constants used in this program
 class Cell:
 
     #Object Variables
-    cellValue = 0
-
+    #cellValue = 0
 
 
     #Constructor
     def __init__(self, gridCoord):
-        notesArray = [False,False,False,False,False,False,False,False,False]
-        coord = gridCoord
+        self.notesArray = [False,False,False,False,False,False,False,False,False]
+        self.coord = gridCoord
         self.duplicateFlag = [False,False,False]
+        self.starter = False
+        self.cellValue = 0
+
 
     #Note Functions
     def toggleNote(self, note): #note - int that is the index for the note that needs to be toggled
-        notesArray[note] != notesArray[note]
-        return None
+        if(self.starter == True):
+            return False
+        else:
+            notesArray[note] != notesArray[note]
+            return True
 
     def removeNotes():
         notesArray = [False,False,False,False,False,False,False,False,False]
@@ -38,11 +43,23 @@ class Cell:
 
     #Cell Functions
     def changeCell(self,number): #number - int that sets the value for the cell
-        self.cellValue = number
-        return None
+        if(self.starter == True):
+            return False
+        else:
+            self.cellValue = number
+            return True
 
     def getNumber(self):
         return self.cellValue #Returns int value within cellValue
+
+    def setStarter(self,number):
+        if(number == 0):
+            self.cellValue = 0
+            return None
+        else:
+            self.starter = True
+            self.cellValue = number
+            return None
 
 
     #Duplicate Functions
@@ -62,3 +79,6 @@ class Cell:
             return True
         else:
             return False
+
+    def returnStarter(self):
+        return self.starter

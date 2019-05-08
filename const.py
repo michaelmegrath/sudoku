@@ -4,6 +4,7 @@ import pygame
 print("Importing contants...")
 
 
+SIZE = 9
 
 
 #Size of Grid and objects in the grid
@@ -32,6 +33,7 @@ BLACK    =(  0,  0,  0)
 RED      =(255, 33, 33) #Fix color
 
 #Light mode Colors
+DARKGREY =(130,130,130)
 GREY     =(220,220,220)
 LIGHTGREY=(235,235,235)
 BLUE     =(210,230,255)

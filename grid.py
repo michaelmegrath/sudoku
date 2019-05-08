@@ -26,8 +26,17 @@ class GridGraphical:
     def drawNumber(self,screen,number,coord,color = const.DARKGREY):
         if(number == 0):
             return None
-        label = const.NUFONT.render(str(number), False, color)
-        screen.blit(label,(coord[0]*const.CELLSIZE+((1/4)*const.CELLSIZE),coord[1]*const.CELLSIZE+((1/8)*const.CELLSIZE)))
+        if(color == const.BLACK):
+            address = "img/Starter" + str(number) + ".png"
+        elif(color == const.RED):
+            address = "img/Wrong" + str(number) + ".png"
+        else:
+            address = "img/Written" + str(number) + ".png"
+        image = pygame.image.load(address)
+        screen.blit(image,(coord[0]*const.CELLSIZE,coord[1]*const.CELLSIZE))
+
+        #label = const.NUFONT.render(str(number), False, color)
+        #screen.blit(label,(coord[0]*const.CELLSIZE+((1/4)*const.CELLSIZE),coord[1]*const.CELLSIZE+((1/8)*const.CELLSIZE)))
         return None
 
     #drawGrid draws the intial grid for the game, it is only called once, its argument is:
@@ -53,7 +62,6 @@ class GridGraphical:
     def toggleSelect(self,screen,coord,color):
         pygame.draw.rect(screen,color,(coord[0]*const.CELLSIZE+1,coord[1]*const.CELLSIZE+1,const.CELLSIZE-1,const.CELLSIZE-1),0)
         return None
-
 
 
 

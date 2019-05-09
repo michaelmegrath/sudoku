@@ -63,6 +63,19 @@ class GridGraphical:
         pygame.draw.rect(screen,color,(coord[0]*const.CELLSIZE+1,coord[1]*const.CELLSIZE+1,const.CELLSIZE-1,const.CELLSIZE-1),0)
         return None
 
+    def drawNote(self,screen,coord,number):
+        location = (coord[0]*const.CELLSIZE + const.NOTESIZE*((number-1)%3),coord[1]*const.CELLSIZE + const.NOTESIZE*((number-1)-((number-1)%3))/3)
+        address = "img/Note" + str(number) + ".png"
+        image = pygame.image.load(address)
+        screen.blit(image,location)
+
+    def eraseNote(self,screen,coord,number):
+        rectangle = (coord[0]*const.CELLSIZE + const.NOTESIZE*((number-1)%3) + 1,coord[1]*const.CELLSIZE + const.NOTESIZE*((number-1)-((number-1)%3))/3 + 1,const.NOTESIZE-1,const.NOTESIZE-1)
+        pygame.draw.rect(screen,const.BLUE,(rectangle))
+
+    def eraseAllNotes(self,screen,coord,color):
+        pygame.draw.rect(screen,color,(coord[0]*const.CELLSIZE+1,coord[1]*const.CELLSIZE+1,const.CELLSIZE-1,const.CELLSIZE-1),0)
+        return None
 
 
 class GridController:
@@ -84,7 +97,6 @@ class GridController:
         screen.fill(const.WHITE)
         self.gridgraph.drawGrid(screen)
         self.getStarters(screen)
-        #add feature that puts in givens
         return None
 
     #Selection functions
@@ -99,6 +111,7 @@ class GridController:
             #undo graphical selection for current selection
             self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
         self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
+        self.redrawNotes(screen)
         self.selected = (int(x[0]/const.CELLSIZE),int(x[1]/const.CELLSIZE))
         self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
         return None
@@ -107,6 +120,7 @@ class GridController:
         if(direction == 'l' and self.selected[0] > 0): #Left Arrow control
             self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
             self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
+            self.redrawNotes(screen)
             self.selected = (self.selected[0]-1,self.selected[1])
             self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
             self.highlightDuplicates(screen)
@@ -114,6 +128,7 @@ class GridController:
         if(direction == 'r' and self.selected[0] < 8): #Right Arrow control
             self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
             self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
+            self.redrawNotes(screen)
             self.selected = (self.selected[0]+1,self.selected[1])
             self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
             self.highlightDuplicates(screen)
@@ -121,6 +136,7 @@ class GridController:
         if(direction == 'u' and self.selected[1] > 0): #Up Arrow control
             self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
             self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
+            self.redrawNotes(screen)
             self.selected = (self.selected[0],self.selected[1]-1)
             self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
             self.highlightDuplicates(screen)
@@ -128,6 +144,7 @@ class GridController:
         if(direction == 'd' and self.selected[1] < 8):#Down Arrow control
             self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
             self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
+            self.redrawNotes(screen)
             self.selected = (self.selected[0],self.selected[1]+1)
             self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
             self.highlightDuplicates(screen)
@@ -136,13 +153,17 @@ class GridController:
     #Number/Cell functions
     def writeNumber(self,screen,number,color = const.BLUE): #Write and save number OVERHAUL THIS FUNCTION
         if(self.gridArray[self.selected[0]][self.selected[1]].getNumber() != 0):
+            self.gridArray[self.selected[0]][self.selected[1]].removeNotes()
             self.eraseNumberGrid(screen,color)
-
+            print("1")
         if(self.gridArray[self.selected[0]][self.selected[1]].returnIfAny() == True):
+            print("2")
             self.gridgraph.drawNumber(screen,number,self.selected,const.RED)
         elif(self.gridArray[self.selected[0]][self.selected[1]].starter == True):
+            print("3")
             self.gridgraph.drawNumber(screen,number,self.selected,const.BLACK)
         else:
+            print("4")
             self.gridgraph.drawNumber(screen,number,self.selected)
         return None
     def saveNumber(self,number):
@@ -154,8 +175,10 @@ class GridController:
     def eraseNumberGrid(self,screen,color = const.BLUE):
         self.gridgraph.toggleSelect(screen,self.selected,color)
 
+
         return None
     def eraseNumberArray(self):
+        self.gridArray[self.selected[0]][self.selected[1]].removeNotes()
         self.gridArray[self.selected[0]][self.selected[1]].changeCell(0)
 
     def returnNumber(self): #Returns Cell Number
@@ -275,6 +298,21 @@ class GridController:
                     self.gridArray[x][y].setStarter(self.starters.grid[x][y])
                     self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),const.BLACK)
 
+
+
+    def setNote(self,screen,number):
+        if(self.gridArray[self.selected[0]][self.selected[1]].toggleNote(number) == True):
+            self.gridgraph.drawNote(screen,self.selected,number)
+        elif(self.gridArray[self.selected[0]][self.selected[1]].getNumber() == 0):
+            self.gridgraph.eraseNote(screen,self.selected,number)
+        else:
+            return None
+
+    def redrawNotes(self,screen):
+        temp = self.gridArray[self.selected[0]][self.selected[1]].returnNoteArray()
+        for i in range(0,9,1):
+            if(temp[i]):
+                self.gridgraph.drawNote(screen,self.selected,i+1)
 
 #create debug functions
 

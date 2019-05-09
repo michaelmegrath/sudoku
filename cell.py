@@ -30,15 +30,21 @@ class Cell:
 
     #Note Functions
     def toggleNote(self, note): #note - int that is the index for the note that needs to be toggled
-        if(self.starter == True):
-            return False
+        if(self.cellValue != 0):
+            return self.notesArray[note-1]
         else:
-            notesArray[note] != notesArray[note]
-            return True
+            self.notesArray[note-1] = not self.notesArray[note-1]
+            return self.notesArray[note-1]
 
-    def removeNotes():
-        notesArray = [False,False,False,False,False,False,False,False,False]
+    def removeNotes(self):
+        self.notesArray = [False,False,False,False,False,False,False,False,False]
         return None
+
+    def hasNotes(self):
+        if(any(self.notesArray)):
+            return True
+        else:
+            return False
 
 
     #Cell Functions
@@ -46,6 +52,7 @@ class Cell:
         if(self.starter == True):
             return False
         else:
+            self.removeNotes()
             self.cellValue = number
             return True
 
@@ -60,6 +67,9 @@ class Cell:
             self.starter = True
             self.cellValue = number
             return None
+
+    def returnNoteArray(self):
+        return self.notesArray
 
 
     #Duplicate Functions
@@ -82,3 +92,6 @@ class Cell:
 
     def returnStarter(self):
         return self.starter
+
+
+    ## DEBUG:

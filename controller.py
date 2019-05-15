@@ -1,0 +1,64 @@
+import pygame
+import grid
+import const
+
+
+class Controller:
+    def __init__(self,screen):
+        self.screen = screen
+
+        pygame.display.set_caption('Sudoku')
+        icon = pygame.image.load("img/largeIcon.png") #If statement for OS, determine best size for each OS
+        pygame.display.set_icon(icon)
+
+        self.playboard = grid.GridController(screen)
+        self.playboard.render(screen)
+
+        pygame.display.update()
+
+    def resizeWindow(self,size):
+        width = size[0]
+        height = size[1]
+        if(width < const.WINDOWWIDTH):
+            width = const.WINDOWWIDTH
+        if(height < const.WINDOWHEIGHT):
+            height = const.WINDOWHEIGHT
+        surface = pygame.display.set_mode((int(width), int(height)),pygame.RESIZABLE)
+        self.playboard.changeBuffer(width,height)
+        self.playboard.render(self.screen)
+        pygame.display.update()
+
+
+    def mouseClick(self,mpos):
+        self.playboard.selectCell(mpos,self.screen)
+        self.playboard.writeNumber(self.screen,self.playboard.returnNumber(),const.BLUE)
+        self.playboard.redrawNotes(self.screen)
+        pygame.display.update()
+
+
+    def arrowKey(self,direction):
+        if(self.playboard.isSelected()):
+            self.playboard.moveSelected(direction,self.screen)
+            self.playboard.writeNumber(self.screen,self.playboard.returnNumber())
+            self.playboard.redrawNotes(self.screen)
+            pygame.display.update()
+
+
+    def numberKey(self,number,note):
+        if(note):
+            self.playboard.setNote(self.screen,number)
+            pygame.display.update()
+        else:
+            if(self.playboard.saveNumber(number)):
+                self.playboard.writeNumber(self.screen,number)
+                self.playboard.checkCRB()
+                self.playboard.highlightDuplicates(self.screen)
+                pygame.display.update()
+
+    def backspaceKey(self):
+        self.playboard.eraseNumberGrid(self.screen)
+        self.playboard.eraseNumberArray()
+        if(self.playboard.gridArray[self.playboard.returnSelected(0)][self.playboard.returnSelected(1)].returnIfAny()):
+            self.playboard.checkCRB()
+        self.playboard.highlightDuplicates(self.screen)
+        pygame.display.update()

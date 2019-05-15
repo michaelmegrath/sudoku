@@ -1,36 +1,32 @@
 #This file contains all constants for the program
-
-import pygame
+import math
 print("Importing contants...")
 
 
 SIZE = 9
+SRSIZE = math.sqrt(SIZE)
 
 
 #Size of Grid and objects in the grid
 MULTIPLIER = 7
-WINDOWSIZE = 81
-WINDOWWIDTH = WINDOWSIZE * MULTIPLIER
-WINDOWHEIGHT = WINDOWSIZE * MULTIPLIER
-BOXSIZE = WINDOWSIZE * MULTIPLIER / 3
+GRIDSIZE = 81
+GRIDWIDTH = GRIDSIZE * MULTIPLIER
+GRIDHEIGHT = GRIDSIZE * MULTIPLIER
+BOXSIZE = GRIDSIZE * MULTIPLIER / 3
 CELLSIZE = BOXSIZE / 3
 NOTESIZE = CELLSIZE / 3
 
-#Font
-pygame.font.init()
+WINDOWWIDTH = GRIDWIDTH + (CELLSIZE*3)
+WINDOWHEIGHT = GRIDHEIGHT + (CELLSIZE*3)
 
 
-#Number Font
-NUFONT = pygame.font.SysFont("arial", 90)
-#NUFONT = pygame.font.Font("calibri.ttf", 70)
 
-#Note Font
-NOFONT = pygame.font.SysFont("Comic Sans MS", 30)
+
+
 
 #Colors
 WHITE    =(255,255,255)
 BLACK    =(  0,  0,  0)
-RED      =(255, 33, 33) #Fix color
 
 #Light mode Colors
 DARKGREY =(130,130,130)

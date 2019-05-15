@@ -18,22 +18,26 @@ print("Importing grid...") #Terminal output
 #Todo:
 #check pygame antialias settings
 class GridGraphical:
+    def __init__(self):
+        self.heightBuffer = int(const.CELLSIZE*1.5)
+        self.widthBuffer = int(const.CELLSIZE*1.5)
+
     #drawNumber draws the number to the pygame window the arguments are as follows:
     #screen, address, to a pygame window
     #number, int, to be printed
     #coord, tuple of two ints(EG: 0,0 or 8,8), that are coordinates of the cell to draw the number to
     #color, tuple of three ints(each int must not surpass 255), color that the number drawn
-    def drawNumber(self,screen,number,coord,color = const.DARKGREY):
+    def drawNumber(self,screen,number,coord,color = 'darkgrey'):
         if(number == 0):
             return None
-        if(color == const.BLACK):
-            address = "img/Starter" + str(number) + ".png"
-        elif(color == const.RED):
+        if(color == 'red'):
             address = "img/Wrong" + str(number) + ".png"
+        elif(color == 'black'):
+            address = "img/Starter" + str(number) + ".png"
         else:
             address = "img/Written" + str(number) + ".png"
         image = pygame.image.load(address)
-        screen.blit(image,(coord[0]*const.CELLSIZE,coord[1]*const.CELLSIZE))
+        screen.blit(image,(coord[0]*const.CELLSIZE+self.widthBuffer,coord[1]*const.CELLSIZE+self.heightBuffer))
 
         #label = const.NUFONT.render(str(number), False, color)
         #screen.blit(label,(coord[0]*const.CELLSIZE+((1/4)*const.CELLSIZE),coord[1]*const.CELLSIZE+((1/8)*const.CELLSIZE)))
@@ -42,17 +46,17 @@ class GridGraphical:
     #drawGrid draws the intial grid for the game, it is only called once, its argument is:
     #screen, address, to a pygame window
     def drawGrid(self,screen):
-        for x in range(0,int(const.WINDOWWIDTH), int(const.CELLSIZE)):
-            pygame.draw.line(screen, const.GREY, (x,0),(x,const.WINDOWHEIGHT))
-        for y in range(0,int(const.WINDOWHEIGHT), int(const.CELLSIZE)):
-            pygame.draw.line(screen, const.GREY, (0,y), (const.WINDOWWIDTH,y))
+        for x in range(self.widthBuffer,int(const.GRIDWIDTH)+self.widthBuffer, int(const.CELLSIZE)):
+            pygame.draw.line(screen, const.GREY, (x,self.heightBuffer),(x,const.GRIDHEIGHT+self.heightBuffer))
+        for y in range(self.heightBuffer,int(const.GRIDHEIGHT)+self.heightBuffer, int(const.CELLSIZE)):
+            pygame.draw.line(screen, const.GREY, (self.widthBuffer,y), (const.GRIDWIDTH+self.widthBuffer,y))
 
-        for x in range(0, int(const.WINDOWWIDTH), int(const.BOXSIZE)):
-            pygame.draw.line(screen, const.BLACK, (x,0),(x,const.WINDOWHEIGHT))
-        pygame.draw.line(screen, const.BLACK,(const.WINDOWWIDTH,0),(const.WINDOWWIDTH,const.WINDOWHEIGHT))
-        for y in range(0,int(const.WINDOWHEIGHT), int(const.BOXSIZE)):
-            pygame.draw.line(screen, const.BLACK, (0,y), (const.WINDOWWIDTH,y))
-        pygame.draw.line(screen, const.BLACK,(0,const.WINDOWHEIGHT),(const.WINDOWWIDTH,const.WINDOWHEIGHT))
+        for x in range(self.widthBuffer, int(const.GRIDWIDTH)+self.widthBuffer, int(const.BOXSIZE)):
+            pygame.draw.line(screen, const.BLACK, (x,self.heightBuffer),(x,const.GRIDHEIGHT+self.heightBuffer))
+        pygame.draw.line(screen, const.BLACK,(const.GRIDWIDTH+self.widthBuffer,self.heightBuffer),(const.GRIDWIDTH+self.widthBuffer,const.GRIDHEIGHT+self.heightBuffer))
+        for y in range(self.heightBuffer,int(const.GRIDHEIGHT)+self.heightBuffer, int(const.BOXSIZE)):
+            pygame.draw.line(screen, const.BLACK, (self.widthBuffer,y), (const.GRIDWIDTH+self.widthBuffer,y))
+        pygame.draw.line(screen, const.BLACK,(self.widthBuffer,const.GRIDHEIGHT+self.heightBuffer),(const.GRIDWIDTH+self.widthBuffer,const.GRIDHEIGHT+self.heightBuffer))
         return None
 
     #toggleSelect paints the selected cell, its arguments are:
@@ -60,22 +64,24 @@ class GridGraphical:
     #coord, tuple of two ints(EG: 0,0 or 8,8), that are coordinates of the cell to select
     #color, tuple of three ints(each int must not surpass 255), color that the cell will be
     def toggleSelect(self,screen,coord,color):
-        pygame.draw.rect(screen,color,(coord[0]*const.CELLSIZE+1,coord[1]*const.CELLSIZE+1,const.CELLSIZE-1,const.CELLSIZE-1),0)
+        pygame.draw.rect(screen,color,((coord[0]*const.CELLSIZE+1)+self.widthBuffer,(coord[1]*const.CELLSIZE+1)+self.heightBuffer,const.CELLSIZE-1,const.CELLSIZE-1),0)
         return None
 
     def drawNote(self,screen,coord,number):
-        location = (coord[0]*const.CELLSIZE + const.NOTESIZE*((number-1)%3),coord[1]*const.CELLSIZE + const.NOTESIZE*((number-1)-((number-1)%3))/3)
+        location = (coord[0]*const.CELLSIZE + const.NOTESIZE*((number-1)%3)+self.widthBuffer,coord[1]*const.CELLSIZE + const.NOTESIZE*((number-1)-((number-1)%3))/3+self.heightBuffer)
         address = "img/Note" + str(number) + ".png"
         image = pygame.image.load(address)
         screen.blit(image,location)
 
     def eraseNote(self,screen,coord,number):
-        rectangle = (coord[0]*const.CELLSIZE + const.NOTESIZE*((number-1)%3) + 1,coord[1]*const.CELLSIZE + const.NOTESIZE*((number-1)-((number-1)%3))/3 + 1,const.NOTESIZE-1,const.NOTESIZE-1)
+        rectangle = (coord[0]*const.CELLSIZE + const.NOTESIZE*((number-1)%3) + 1+self.widthBuffer,coord[1]*const.CELLSIZE + const.NOTESIZE*((number-1)-((number-1)%3))/3 + 1+self.heightBuffer,const.NOTESIZE-1,const.NOTESIZE-1)
         pygame.draw.rect(screen,const.BLUE,(rectangle))
 
-    def eraseAllNotes(self,screen,coord,color):
-        pygame.draw.rect(screen,color,(coord[0]*const.CELLSIZE+1,coord[1]*const.CELLSIZE+1,const.CELLSIZE-1,const.CELLSIZE-1),0)
-        return None
+
+    def changeBuffer(self,wwidth,wheight):
+        self.widthBuffer = int((wwidth/2) - (4.5*const.CELLSIZE))
+        self.heightBuffer = int((wheight/2) - (4.5*const.CELLSIZE))
+
 
 
 class GridController:
@@ -89,15 +95,27 @@ class GridController:
 
 
     #Constructor & render functions
-    def __init__(self):
+    def __init__(self,screen):
         self.selected = (-1,-1)
         self.starters = starter.Starter()
+        self.gridgraph.drawGrid(screen)
+        self.getStarters(screen)
+        self.heightBuffer = int(const.CELLSIZE*1.5)
+        self.widthBuffer = int(const.CELLSIZE*1.5)
+
 
     def render(self,screen): #Renders gameboard
         screen.fill(const.WHITE)
         self.gridgraph.drawGrid(screen)
-        self.getStarters(screen)
+        self.redrawNumbers(screen)
+        self.highlightDuplicates(screen)
         return None
+
+
+    def changeBuffer(self,wwidth,wheight):
+        self.widthBuffer = int((wwidth/2) - (4.5*const.CELLSIZE))
+        self.heightBuffer = int((wheight/2) - (4.5*const.CELLSIZE))
+        self.gridgraph.changeBuffer(wwidth,wheight)
 
     #Selection functions
     def isSelected(self): #If there is a selected square return true else return false
@@ -112,7 +130,7 @@ class GridController:
             self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
         self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
         self.redrawNotes(screen)
-        self.selected = (int(x[0]/const.CELLSIZE),int(x[1]/const.CELLSIZE))
+        self.selected = (int((x[0]-self.widthBuffer)/const.CELLSIZE),int((x[1]-self.heightBuffer)/const.CELLSIZE))
         self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
         return None
 
@@ -155,17 +173,15 @@ class GridController:
         if(self.gridArray[self.selected[0]][self.selected[1]].getNumber() != 0):
             self.gridArray[self.selected[0]][self.selected[1]].removeNotes()
             self.eraseNumberGrid(screen,color)
-            print("1")
+        if(self.selected[0]<0 or self.selected[1]<0 or self.selected[0]>8 or self.selected[1]>8):
+            return False
         if(self.gridArray[self.selected[0]][self.selected[1]].returnIfAny() == True):
-            print("2")
-            self.gridgraph.drawNumber(screen,number,self.selected,const.RED)
+            self.gridgraph.drawNumber(screen,number,self.selected,'red')
         elif(self.gridArray[self.selected[0]][self.selected[1]].starter == True):
-            print("3")
-            self.gridgraph.drawNumber(screen,number,self.selected,const.BLACK)
+            self.gridgraph.drawNumber(screen,number,self.selected,'black')
         else:
-            print("4")
             self.gridgraph.drawNumber(screen,number,self.selected)
-        return None
+        return True
     def saveNumber(self,number):
         if(self.gridArray[self.selected[0]][self.selected[1]].changeCell(number)):
             return True
@@ -277,14 +293,14 @@ class GridController:
         for x in range(0,9,1):
             for y in range(0,9,1):
                 if(self.gridArray[x][y].returnIfAny()):
-                    self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),const.RED)
+                    self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),'red')
                 elif(self.gridArray[x][y].returnStarter()):
-                    self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),const.BLACK)
+                    self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),'black')
                 else:
                     self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y))
         if(self.gridArray[self.selected[0]][self.selected[1]].returnIfAny()):
             self.gridgraph.toggleSelect(screen,(self.selected[0],self.selected[1]),const.BLUE)
-            self.gridgraph.drawNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),(self.selected[0],self.selected[1]),const.RED)
+            self.gridgraph.drawNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),(self.selected[0],self.selected[1]),'red')
 
 
     def getStarters(self,screen):
@@ -296,7 +312,13 @@ class GridController:
                     pass
                 else:
                     self.gridArray[x][y].setStarter(self.starters.grid[x][y])
-                    self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),const.BLACK)
+                    self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),'black')
+
+    def redrawNumbers(self,screen):
+        self.selected = [-1,-1]
+        for x in range(0,9,1):
+            for y in range(0,9,1):
+                self.redrawNotes(screen,(x,y))
 
 
 
@@ -308,12 +330,17 @@ class GridController:
         else:
             return None
 
-    def redrawNotes(self,screen):
-        temp = self.gridArray[self.selected[0]][self.selected[1]].returnNoteArray()
-        for i in range(0,9,1):
-            if(temp[i]):
-                self.gridgraph.drawNote(screen,self.selected,i+1)
-
+    def redrawNotes(self,screen,coord = (-1,-1)):
+        if(coord == (-1,-1)):
+            temp = self.gridArray[self.selected[0]][self.selected[1]].returnNoteArray()
+            for i in range(0,9,1):
+                if(temp[i]):
+                    self.gridgraph.drawNote(screen,self.selected,i+1)
+        else:
+            temp = self.gridArray[coord[0]][coord[1]].returnNoteArray()
+            for i in range(0,9,1):
+                if(temp[i]):
+                    self.gridgraph.drawNote(screen,coord,i+1)
 #create debug functions
 
     def isStarter(self):

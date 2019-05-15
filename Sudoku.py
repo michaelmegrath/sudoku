@@ -1,154 +1,107 @@
 import pygame
-import grid
 import const
+import controller
 
 
 def main():
-    #Test Code
 
 
 
     print("Running!")
     #Constructing Screen
     global screen
-    screen = pygame.display.set_mode((const.WINDOWWIDTH+1, const.WINDOWHEIGHT+1))
-    pygame.display.set_caption('Sudoku')
+    screen = pygame.display.set_mode((int(const.WINDOWWIDTH+1), int(const.WINDOWHEIGHT+1)),pygame.RESIZABLE)
+    control = controller.Controller(screen)
 
-    #Fill in Screen
-    #screen.fill(const.WHITE)
-    #grid.drawGrid(screen)
-    playboard = grid.GridController()
-    playboard.render(screen)
 
-    #Display contents of screen
-    pygame.display.flip()
 
-    #Sidebar, implement later
-    #game_surf = pygame.surface.Surface(((2*const.WINDOWWIDTH)+1, const.WINDOWHEIGHT+1))
+    #TEST FUNCTIONS
+
+
 
     running = True #Variable for gameloop
     while running: #Main Loop
-        pygame.display.update()
 
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                pygame.display.quit()
+
+            elif event.type == pygame.VIDEORESIZE:
+                control.resizeWindow((event.w,event.h))
 
             #Selecting Cells w/ mouse
             elif event.type == pygame.MOUSEBUTTONUP:
-
-                playboard.selectCell(pygame.mouse.get_pos(),screen)
-                playboard.writeNumber(screen,playboard.returnNumber(),const.BLUE)
-                playboard.redrawNotes(screen)
+                control.mouseClick(pygame.mouse.get_pos())
 
             elif event.type == pygame.KEYDOWN:
 
                 #Arrow key Functionallity
-                if event.key == pygame.K_LEFT and playboard.isSelected():
-                    playboard.moveSelected('l',screen)
-                    playboard.writeNumber(screen,playboard.returnNumber())
-                    playboard.redrawNotes(screen)
-                if event.key == pygame.K_RIGHT and playboard.isSelected():
-                    playboard.moveSelected('r',screen)
-                    playboard.writeNumber(screen,playboard.returnNumber())
-                    playboard.redrawNotes(screen)
-                if event.key == pygame.K_UP and playboard.isSelected():
-                    playboard.moveSelected('u',screen)
-                    playboard.writeNumber(screen,playboard.returnNumber())
-                    playboard.redrawNotes(screen)
+                if event.key == pygame.K_LEFT:
+                    control.arrowKey('l')
+                if event.key == pygame.K_RIGHT:
+                    control.arrowKey('r')
+                if event.key == pygame.K_UP:
+                    control.arrowKey('u')
+                if event.key == pygame.K_DOWN:
+                    control.arrowKey('d')
 
-                if event.key == pygame.K_DOWN and playboard.isSelected():
-                    playboard.moveSelected('d',screen)
-                    playboard.writeNumber(screen,playboard.returnNumber())
-                    playboard.redrawNotes(screen)
 
-                #add Shift click functionallity for notes here
 
 
                 #Number Input
                 if event.key == pygame.K_1:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT):
-                        playboard.setNote(screen,1)
+                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
+                        control.numberKey(1,True)
                     else:
-                        if(playboard.saveNumber(1)):
-                            playboard.writeNumber(screen,1)
-                            playboard.checkCRB()
-                            playboard.highlightDuplicates(screen)
+                        control.numberKey(1,False)
                 if event.key == pygame.K_2:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT):
-                        playboard.setNote(screen,2)
+                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
+                        control.numberKey(2,True)
                     else:
-                        if(playboard.saveNumber(2)):
-                            playboard.writeNumber(screen,2)
-                            playboard.checkCRB()
-                            playboard.highlightDuplicates(screen)
+                        control.numberKey(2,False)
                 if event.key == pygame.K_3:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT):
-                        playboard.setNote(screen,3)
+                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
+                        control.numberKey(3,True)
                     else:
-                        if(playboard.saveNumber(3)):
-                            playboard.writeNumber(screen,3)
-                            playboard.checkCRB()
-                            playboard.highlightDuplicates(screen)
+                        control.numberKey(3,False)
                 if event.key == pygame.K_4:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT):
-                        playboard.setNote(screen,4)
+                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
+                        control.numberKey(4,True)
                     else:
-                        if(playboard.saveNumber(4)):
-                            playboard.writeNumber(screen,4)
-                            playboard.checkCRB()
-                            playboard.highlightDuplicates(screen)
+                        control.numberKey(4,False)
                 if event.key == pygame.K_5:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT):
-                        playboard.setNote(screen,5)
+                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
+                        control.numberKey(5,True)
                     else:
-                        if(playboard.saveNumber(5)):
-                            playboard.writeNumber(screen,5)
-                            playboard.checkCRB()
-                            playboard.highlightDuplicates(screen)
+                        control.numberKey(5,False)
                 if event.key == pygame.K_6:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT):
-                        playboard.setNote(screen,6)
+                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
+                        control.numberKey(6,True)
                     else:
-                        if(playboard.saveNumber(6)):
-                            playboard.writeNumber(screen,6)
-                            playboard.checkCRB()
-                            playboard.highlightDuplicates(screen)
+                        control.numberKey(6,False)
                 if event.key == pygame.K_7:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT):
-                        playboard.setNote(screen,7)
+                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
+                        control.numberKey(7,True)
                     else:
-                        if(playboard.saveNumber(7)):
-                            playboard.writeNumber(screen,7)
-                            playboard.checkCRB()
-                            playboard.highlightDuplicates(screen)
+                        control.numberKey(7,False)
                 if event.key == pygame.K_8:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT):
-                        playboard.setNote(screen,8)
+                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
+                        control.numberKey(8,True)
                     else:
-                        if(playboard.saveNumber(8)):
-                            playboard.writeNumber(screen,8)
-                            playboard.checkCRB()
-                            playboard.highlightDuplicates(screen)
+                        control.numberKey(8,False)
                 if event.key == pygame.K_9:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT):
-                        playboard.setNote(screen,9)
+                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
+                        control.numberKey(9,True)
                     else:
-                        if(playboard.saveNumber(9)):
-                            playboard.writeNumber(screen,9)
-                            playboard.checkCRB()
-                            playboard.highlightDuplicates(screen)
+                        control.numberKey(9,False)
 
                 #Delete Cell
                 if event.key == pygame.K_BACKSPACE:
-                    playboard.eraseNumberGrid(screen)
-                    playboard.eraseNumberArray()
-                    if(playboard.gridArray[playboard.returnSelected(0)][playboard.returnSelected(1)].returnIfAny()):
-                        playboard.checkCRB()
+                    control.backspaceKey()
 
 
-                    playboard.highlightDuplicates(screen)
     print("Sudoku Closed.")
 if __name__=='__main__':
     main()

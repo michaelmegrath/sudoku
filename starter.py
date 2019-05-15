@@ -16,7 +16,7 @@ class Starter:
     def createStarter(self,difficulty = 2):
         x = random.randint(0,8)
         y = random.randint(0,8)
-        for i in range(0,40,1):
+        for i in range(0,30,1):
             if(x == y):
                 self.grid[x][y] = 0
             else:

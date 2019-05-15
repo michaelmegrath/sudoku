@@ -15,6 +15,8 @@ class Controller:
         self.playboard.render(screen)
 
         pygame.display.update()
+        self.widthBuffer = int(const.CELLSIZE*3)
+        self.heightBuffer = int(const.CELLSIZE*1.5)
 
     def resizeWindow(self,size):
         width = size[0]
@@ -24,15 +26,22 @@ class Controller:
         if(height < const.WINDOWHEIGHT):
             height = const.WINDOWHEIGHT
         surface = pygame.display.set_mode((int(width), int(height)),pygame.RESIZABLE)
+
+        self.widthBuffer = (width / 2) - (4.5 * const.CELLSIZE)
+        self.heightBuffer = (height / 2) - (4.5 * const.CELLSIZE)
         self.playboard.changeBuffer(width,height)
         self.playboard.render(self.screen)
         pygame.display.update()
 
 
     def mouseClick(self,mpos):
-        self.playboard.selectCell(mpos,self.screen)
-        self.playboard.writeNumber(self.screen,self.playboard.returnNumber(),const.BLUE)
-        self.playboard.redrawNotes(self.screen)
+        if(self.isInGrid(mpos)):
+            print(mpos)
+            self.playboard.selectCell(mpos,self.screen)
+            self.playboard.writeNumber(self.screen,self.playboard.returnNumber(),const.BLUE)
+            self.playboard.redrawNotes(self.screen)
+        else:
+            pass
         pygame.display.update()
 
 
@@ -62,3 +71,11 @@ class Controller:
             self.playboard.checkCRB()
         self.playboard.highlightDuplicates(self.screen)
         pygame.display.update()
+
+    #Utility functions
+
+    def isInGrid(self,mpos):
+        if((mpos[0] > self.widthBuffer and mpos[0] < (self.widthBuffer + const.GRIDWIDTH)) and (mpos[1] > self.heightBuffer and mpos[1] < (self.heightBuffer + const.GRIDHEIGHT))):
+            return True
+        else:
+            return False

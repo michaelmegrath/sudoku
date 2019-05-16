@@ -16,12 +16,20 @@ class Starter:
     def createStarter(self,difficulty = 2):
         x = random.randint(0,8)
         y = random.randint(0,8)
-        for i in range(0,30,1):
-            if(x == y):
+        for i in range(0,18,1):
+            if(x == y and (x + y) == 8):
                 self.grid[x][y] = 0
+            elif(x == y):
+                self.grid[x][y] = 0
+                self.grid[-1*(y+1)][-1*(x+1)] = 0
+            elif(x + y == 8):
+                self.grid[x][y] = 0
+                self.grid[y][x] = 0
             else:
                 self.grid[x][y] = 0
                 self.grid[y][x] = 0
+                self.grid[-1*(y+1)][-1*(x+1)] = 0
+                self.grid[-1*(x+1)][-1*(y+1)] = 0
             x = random.randint(0,8)
             y = random.randint(0,8)
 

@@ -1,5 +1,6 @@
 import pygame
 import grid
+import igmenu
 import const
 
 
@@ -36,7 +37,6 @@ class Controller:
 
     def mouseClick(self,mpos):
         if(self.isInGrid(mpos)):
-            print(mpos)
             self.playboard.selectCell(mpos,self.screen)
             self.playboard.writeNumber(self.screen,self.playboard.returnNumber(),const.BLUE)
             self.playboard.redrawNotes(self.screen)

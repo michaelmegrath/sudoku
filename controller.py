@@ -12,8 +12,11 @@ class Controller:
         icon = pygame.image.load("img/largeIcon.png") #If statement for OS, determine best size for each OS
         pygame.display.set_icon(icon)
 
+        pygame.display.update()
         self.playboard = grid.GridController(screen)
         self.playboard.render(screen)
+        self.outerMenu = igmenu.igMenu(screen)
+
 
         pygame.display.update()
         self.widthBuffer = int(const.CELLSIZE*3)
@@ -32,10 +35,14 @@ class Controller:
         self.heightBuffer = (height / 2) - (4.5 * const.CELLSIZE)
         self.playboard.changeBuffer(width,height)
         self.playboard.render(self.screen)
+        self.outerMenu.resizeMenu(self.widthBuffer-int(const.CELLSIZE*3),self.heightBuffer-int(const.CELLSIZE*1.5))
+
+        self.outerMenu.setNumberArray(self.screen)
         pygame.display.update()
 
 
     def mouseClick(self,mpos):
+        #print(mpos)
         if(self.isInGrid(mpos)):
             self.playboard.selectCell(mpos,self.screen)
             self.playboard.writeNumber(self.screen,self.playboard.returnNumber(),const.BLUE)

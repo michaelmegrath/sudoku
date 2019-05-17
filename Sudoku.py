@@ -25,8 +25,8 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
                 pygame.display.quit()
+                running = False
 
             elif event.type == pygame.VIDEORESIZE:
                 control.resizeWindow((event.w,event.h))

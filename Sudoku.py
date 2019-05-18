@@ -47,7 +47,8 @@ def main():
                 if event.key == pygame.K_DOWN:
                     control.arrowKey('d')
 
-
+                if event.key == pygame.K_TAB:
+                    control.tabKey()
 
 
                 #Number Input

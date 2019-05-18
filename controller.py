@@ -85,6 +85,12 @@ class Controller:
                 self.playboard.highlightDuplicates(self.screen)
                 pygame.display.update()
 
+    def tabKey(self):
+        self.playboard.resetSelected(self.screen)
+        self.playboard.writeNumber(self.screen,self.playboard.returnNumber(),const.BLUE)
+        self.playboard.redrawNotes(self.screen)
+        pygame.display.update()
+
     def backspaceKey(self):
         self.playboard.eraseNumberGrid(self.screen)
         self.playboard.eraseNumberArray()

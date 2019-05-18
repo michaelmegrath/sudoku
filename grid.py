@@ -295,8 +295,10 @@ class GridController:
         for x in range(0,9,1):
             for y in range(0,9,1):
                 if(self.gridArray[x][y].returnIfAny()):
+                    self.gridgraph.toggleSelect(screen,(x,y),const.WHITE)
                     self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),'red')
                 elif(self.gridArray[x][y].returnStarter()):
+                    self.gridgraph.toggleSelect(screen,(x,y),const.WHITE)
                     self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),'black')
                 else:
                     self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y))
@@ -314,7 +316,7 @@ class GridController:
                     pass
                 else:
                     self.gridArray[x][y].setStarter(self.starters.grid[x][y])
-                    self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),'black')
+                    #self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),'black')
 
     def redrawNumbers(self,screen):
         self.selected = [-1,-1]
@@ -343,6 +345,16 @@ class GridController:
             for i in range(0,9,1):
                 if(temp[i]):
                     self.gridgraph.drawNote(screen,coord,i+1)
+
+    def resetSelected(self,screen):
+        if(self.selected != (-1,-1)): # If there is something selected
+            #undo graphical selection for current selection
+            self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
+        self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
+        self.redrawNotes(screen)
+        self.selected = (0,0)
+        self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
+        return None
 #create debug functions
 
     def isStarter(self):

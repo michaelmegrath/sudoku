@@ -12,7 +12,7 @@ class igMenu: #In Game Menu
 
     def setNumberArray(self,screen):
         height = int(10.75 * const.CELLSIZE) + self.heightBuffer
-        width = int(.25 * const.CELLSIZE) + self.widthBuffer/2
+        width = int(.25 * const.CELLSIZE) + self.widthBuffer
         self.numberArray.append(button.IconButton(1,screen,(width,height)))
         width += int(const.CELLSIZE * 1.5)
         for i in range(1,10,1):
@@ -29,4 +29,10 @@ class igMenu: #In Game Menu
         return None
 
     def findButton(self,mpos):
-        pass
+        if(677+self.heightBuffer <= mpos[1] < 740 + self.heightBuffer):
+            for i in range(0,10,1):
+                temp = (i*94)+15+self.widthBuffer
+                if(temp <= mpos[0] < temp+63):
+                    return self.numberArray[i].onClick()
+
+        return -1

@@ -21,6 +21,7 @@ class Controller:
         pygame.display.update()
         self.widthBuffer = int(const.CELLSIZE*3)
         self.heightBuffer = int(const.CELLSIZE*1.5)
+        self.noteFlag = False
 
     def resizeWindow(self,size):
         width = size[0]
@@ -36,7 +37,6 @@ class Controller:
         self.playboard.changeBuffer(width,height)
         self.playboard.render(self.screen)
         self.outerMenu.resizeMenu(self.widthBuffer-int(const.CELLSIZE*3),self.heightBuffer-int(const.CELLSIZE*1.5))
-
         self.outerMenu.setNumberArray(self.screen)
         pygame.display.update()
 
@@ -48,7 +48,21 @@ class Controller:
             self.playboard.writeNumber(self.screen,self.playboard.returnNumber(),const.BLUE)
             self.playboard.redrawNotes(self.screen)
         else:
-            pass
+            catch = self.outerMenu.findButton(mpos)
+            if(catch == 0):
+                pass
+            elif(0<catch<10):
+                self.numberKey(catch,False)
+            elif(catch == 10):
+                if(self.noteFlag):
+                    self.noteFlag = False
+                    #Control animation
+                else:
+                    self.noteFlag = True
+                    #control animation
+            else:
+                pass
+
         pygame.display.update()
 
 
@@ -61,7 +75,7 @@ class Controller:
 
 
     def numberKey(self,number,note):
-        if(note):
+        if(note != self.noteFlag):
             self.playboard.setNote(self.screen,number)
             pygame.display.update()
         else:

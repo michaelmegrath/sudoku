@@ -4,6 +4,7 @@ import pygame
 
 class Button:
     def __init__(self,id,screen,coord):
+        self.tag = id
         self.image = self.loadImage(id)
         self.displayButton(screen,coord)
 
@@ -11,7 +12,7 @@ class Button:
         screen.blit(self.image,coord)
         return None
     def onClick(self):
-        pass
+        return self.tag
 
 class IconButton(Button):
 

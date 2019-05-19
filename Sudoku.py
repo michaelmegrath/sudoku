@@ -52,7 +52,6 @@ def main():
 
                 #Number is pressed
                 if event.key >= pygame.K_1 and event.key <= pygame.K_9:
-                    print(event.key - 48)
                     if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
                         control.numberKey(event.key - 48,True) # K_1 = 49, so for the integer 1, subtract 48 (1 = 49 - 48)
                     else:

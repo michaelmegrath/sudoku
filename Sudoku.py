@@ -12,7 +12,7 @@ def main():
     global screen
     screen = pygame.display.set_mode((int(const.WINDOWWIDTH+1), int(const.WINDOWHEIGHT+1)),pygame.RESIZABLE)
     control = controller.Controller(screen)
-
+    clock = pygame.time.Clock()
 
 
     #TEST FUNCTIONS
@@ -21,7 +21,8 @@ def main():
 
     running = True #Variable for gameloop
     while running: #Main Loop
-
+        #print(clock.get_fps())
+        clock.tick(15)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

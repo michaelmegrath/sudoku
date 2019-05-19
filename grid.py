@@ -36,7 +36,7 @@ class GridGraphical:
             address = "img/Starter" + str(number) + ".png"
         else:
             address = "img/Written" + str(number) + ".png"
-        image = pygame.image.load(address)
+        image = pygame.image.load(address).convert_alpha()
         screen.blit(image,(coord[0]*const.CELLSIZE+self.widthBuffer,coord[1]*const.CELLSIZE+self.heightBuffer))
 
         #label = const.NUFONT.render(str(number), False, color)
@@ -70,7 +70,7 @@ class GridGraphical:
     def drawNote(self,screen,coord,number):
         location = (coord[0]*const.CELLSIZE + const.NOTESIZE*((number-1)%3)+self.widthBuffer,coord[1]*const.CELLSIZE + const.NOTESIZE*((number-1)-((number-1)%3))/3+self.heightBuffer)
         address = "img/Note" + str(number) + ".png"
-        image = pygame.image.load(address)
+        image = pygame.image.load(address).convert_alpha()
         screen.blit(image,location)
 
     def eraseNote(self,screen,coord,number):

@@ -24,7 +24,7 @@ class IconButton(Button):
             address = "img/Buttons/Button" + str(id) + ".png"
         else:
             address = "img/Buttons/Menu"
-        return pygame.image.load(address)
+        return pygame.image.load(address).convert_alpha()
 
 
 class MenuButton(Button):

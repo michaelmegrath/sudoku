@@ -51,53 +51,12 @@ def main():
                 if event.key == pygame.K_TAB:
                     control.tabKey()
 
-
-                #Number Input
-                if event.key == pygame.K_1:
+                #Number is pressed
+                if event.key >= pygame.K_1 and event.key <= pygame.K_9:
                     if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
-                        control.numberKey(1,True)
+                        control.numberKey(event.key - 48,True) # K_1 = 49, so for the integer 1, subtract 48 (1 = 49 - 48)
                     else:
-                        control.numberKey(1,False)
-                if event.key == pygame.K_2:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
-                        control.numberKey(2,True)
-                    else:
-                        control.numberKey(2,False)
-                if event.key == pygame.K_3:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
-                        control.numberKey(3,True)
-                    else:
-                        control.numberKey(3,False)
-                if event.key == pygame.K_4:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
-                        control.numberKey(4,True)
-                    else:
-                        control.numberKey(4,False)
-                if event.key == pygame.K_5:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
-                        control.numberKey(5,True)
-                    else:
-                        control.numberKey(5,False)
-                if event.key == pygame.K_6:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
-                        control.numberKey(6,True)
-                    else:
-                        control.numberKey(6,False)
-                if event.key == pygame.K_7:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
-                        control.numberKey(7,True)
-                    else:
-                        control.numberKey(7,False)
-                if event.key == pygame.K_8:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
-                        control.numberKey(8,True)
-                    else:
-                        control.numberKey(8,False)
-                if event.key == pygame.K_9:
-                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
-                        control.numberKey(9,True)
-                    else:
-                        control.numberKey(9,False)
+                        control.numberKey(event.key - 48,False)
 
                 #Delete Cell
                 if event.key == pygame.K_BACKSPACE:

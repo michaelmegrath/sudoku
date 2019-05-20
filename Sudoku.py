@@ -54,6 +54,11 @@ def main():
                         control.numberKey(event.key - 48,True) # K_1 = 49, so for the integer 1, subtract 48 (1 = 49 - 48)
                     else:
                         control.numberKey(event.key - 48,False)
+                elif event.key >= pygame.K_KP1 and event.key <= pygame.K_KP9:
+                    if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
+                        control.numberKey(event.key - 256,True) # K_KP1 = 257, so for the integer 1, subtract 48 (1 = 257 - 256)
+                    else:
+                        control.numberKey(event.key - 256,False)
 
                 #Delete Cell
                 if event.key == pygame.K_BACKSPACE:

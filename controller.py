@@ -10,6 +10,8 @@ class Controller:
 
         pygame.display.set_caption('Sudoku')
         icon = pygame.image.load("img/largeIcon.png") #If statement for OS, determine best size for each OS
+        clock = pygame.time.Clock()
+        clock.tick(15)
         pygame.display.set_icon(icon)
 
         pygame.display.update()
@@ -78,6 +80,8 @@ class Controller:
         if(note != self.noteFlag):
             self.playboard.setNote(self.screen,number)
             pygame.display.update()
+        elif(number == self.playboard.returnNumber()):
+            self.backspaceKey()
         else:
             if(self.playboard.saveNumber(number)):
                 self.playboard.writeNumber(self.screen,number)

@@ -22,10 +22,21 @@ class IconButton(Button):
             address = "img/Buttons/Note.png"
         elif(0<id<10):
             address = "img/Buttons/Button" + str(id) + ".png"
+        elif(id == 0):
+            address = "img/Buttons/menuIcon.png"
         else:
-            address = "img/Buttons/Menu"
+            return None
         return pygame.image.load(address).convert_alpha()
 
 
 class MenuButton(Button):
-    pass
+    def loadImage(self,id):
+        if(id == 11):
+            address = "img/Buttons/igNewgame.png"
+        elif(id == 12):
+            address = "img/Buttons/igHint.png"
+        elif(id == 13):
+            address = "img/Buttons/igQuit.png"
+        else:
+            return None
+        return pygame.image.load(address).convert_alpha()

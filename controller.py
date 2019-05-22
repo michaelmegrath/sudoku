@@ -40,6 +40,8 @@ class Controller:
         self.playboard.render(self.screen)
         self.outerMenu.resizeMenu(self.widthBuffer-int(const.CELLSIZE*3),self.heightBuffer-int(const.CELLSIZE*1.5))
         self.outerMenu.setNumberArray(self.screen)
+        self.outerMenu.setMenuIcon(self.screen)
+        self.outerMenu.drawMenu(self.screen)
         pygame.display.update()
 
 
@@ -52,7 +54,7 @@ class Controller:
         else:
             catch = self.outerMenu.findButton(mpos)
             if(catch == 0):
-                pass
+                self.outerMenu.toggleMenu(self.screen)
             elif(0<catch<10):
                 self.numberKey(catch,False)
             elif(catch == 10):

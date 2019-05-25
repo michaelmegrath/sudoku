@@ -11,6 +11,8 @@ class Starter:
         self.answerGrid = [[1,4,7,2,5,8,6,9,3],[2,5,8,3,6,9,7,1,4],[3,6,9,4,7,1,8,2,5],[4,7,1,5,8,2,9,3,6],[5,8,2,6,9,3,1,4,7],[6,9,3,7,1,4,2,5,8],[7,1,4,8,2,5,3,6,9],[8,2,5,9,3,6,4,7,1],[9,3,6,1,4,7,5,8,2]]
         self.shuffleAll()
         self.createStarter()
+        self.answerGrid = self.copyGrid
+
 
     def newGame(self,difficulty = 2):
         #self.answerGrid =self.copyGrid
@@ -38,7 +40,6 @@ class Starter:
                 self.grid[-1*(x+1)][-1*(y+1)] = 0
             x = random.randint(0,8)
             y = random.randint(0,8)
-        self.answerGrid = self.copyGrid
 
 
 

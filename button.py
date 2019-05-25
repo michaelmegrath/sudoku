@@ -39,6 +39,14 @@ class MenuButton(Button):
             address = "img/Buttons/igMenu.png"
         elif(id == 14):
             address = "img/Buttons/igLeave.png"
+        elif(id == 15):
+            address = "img/Buttons/igColorMode.png"
+        elif(id == 16):
+            address = "img/Buttons/igUndo.png"
+        elif(id == 17):
+            address = "img/Buttons/igMute.png"
+        elif(id == 18):
+            address = "img/Buttons/igHint.png"
         else:
             return None
         return pygame.image.load(address).convert_alpha()

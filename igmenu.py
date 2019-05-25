@@ -69,17 +69,29 @@ class igMenu: #In Game Menu
             if(21 <= mpos[0] < 85):
                 return self.menuIcon.onClick()
         elif(31+self.widthBuffer/2<=mpos[0]<31+self.widthBuffer/2+const.CELLSIZE*2):
-            return self.findMenuItem(mpos)
+            return self.findMenuItem(mpos,"left")
+        elif(12*const.CELLSIZE + self.widthBuffer*1.5+31<=mpos[0]<14*const.CELLSIZE + self.widthBuffer*1.5 + 31):
+            return self.findMenuItem(mpos,"right")
         else:
             pass
         return -1
 
-    def findMenuItem(self,mpos):
-        height = (2*const.CELLSIZE+self.heightBuffer)
-        for i in range(0,3,1):
+    def findMenuItem(self,mpos,side):
+        if(side == "left"):
+            height = (2*const.CELLSIZE+self.heightBuffer)
+            for i in range(0,3,1):
+                if(height<mpos[1]<=height+2*const.CELLSIZE):
+                    return i+12
+                height += 3*const.CELLSIZE
+        elif(side == "right"):
+            height = (1.5*const.CELLSIZE+self.heightBuffer)
             if(height<mpos[1]<=height+2*const.CELLSIZE):
-                return i+12
-            height += 3*const.CELLSIZE
+                return 15
+            height += 2.5*const.CELLSIZE
+            for i in range(0,3,1):
+                if(height<mpos[1]<=height+2*const.CELLSIZE):
+                    return i+16
+        
         return -1
 
 
@@ -116,3 +128,10 @@ class igMenu: #In Game Menu
         for i in range(0,3,1):
             self.leftMenu.append(button.MenuButton(i+12,screen,(x,y)))
             y += 3*const.CELLSIZE
+        x = 31+self.widthBuffer * 1.5 + const.CELLSIZE*12
+        y = int(1.5*const.CELLSIZE)
+        self.rightMenu.append(button.MenuButton(15,screen,(x,y)))
+        y += int(2.5*const.CELLSIZE)
+        for i in range(0,3,1):
+            self.rightMenu.append(button.MenuButton(i+16,screen,(x,y)))
+            y+=2*const.CELLSIZE

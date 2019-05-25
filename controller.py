@@ -78,6 +78,14 @@ class Controller:
             pass
         elif(catch == 14 and menu):
             return False
+        elif(catch == 15 and menu):
+            pass
+        elif(catch == 16 and menu):
+            pass
+        elif(catch == 17 and menu):
+            pass
+        elif(catch == 18 and menu):
+            pass
         else:
             pass
         return True

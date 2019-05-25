@@ -22,7 +22,6 @@ class Cell:
     #Constructor
     def __init__(self, gridCoord):
         self.notesArray = [False]*const.SIZE
-        self.coord = gridCoord
         self.duplicateFlag = [False,False,False]
         self.starter = False
         self.cellValue = 0
@@ -93,5 +92,11 @@ class Cell:
     def returnStarter(self):
         return self.starter
 
+    def resetCell(self):
+        self.duplicateFlag = [False,False,False]
+        self.cellValue = 0
+        self.starter = False
+        self.removeNotes()
+        return None
 
     ## DEBUG:

@@ -46,29 +46,41 @@ class Controller:
 
 
     def mouseClick(self,mpos):
-        #print(mpos)
         if(self.isInGrid(mpos)):
             self.playboard.selectCell(mpos,self.screen)
             self.playboard.writeNumber(self.screen,self.playboard.returnNumber(),const.BLUE)
             self.playboard.redrawNotes(self.screen)
         else:
-            catch = self.outerMenu.findButton(mpos)
-            if(catch == 0):
-                self.outerMenu.toggleMenu(self.screen)
-            elif(0<catch<10):
-                self.numberKey(catch,False)
-            elif(catch == 10):
-                if(self.noteFlag):
-                    self.noteFlag = False
-                    #Control animation
-                else:
-                    self.noteFlag = True
-                    #control animation
-            else:
-                pass
+            if(not self.igMenuClick(mpos)):
+                return False
 
         pygame.display.update()
+        return True
 
+    def igMenuClick(self,mpos):
+        catch = self.outerMenu.findButton(mpos)
+        menu = self.outerMenu.isMenuOpen()
+        if(catch == 0 or catch == 11):
+            self.outerMenu.toggleMenu(self.screen)
+        elif(0<catch<10):
+            self.numberKey(catch,False)
+        elif(catch == 10):
+            if(self.noteFlag):
+                self.noteFlag = False
+                #Control animation
+            else:
+                self.noteFlag = True
+                #control animation
+        elif(catch == 12 and menu):
+            self.playboard.newGame(self.screen)
+        elif(catch == 13 and menu):
+            print("Menu")
+            pass
+        elif(catch == 14 and menu):
+            return False
+        else:
+            pass
+        return True
 
     def arrowKey(self,direction):
         if(self.playboard.isSelected()):
@@ -79,17 +91,20 @@ class Controller:
 
 
     def numberKey(self,number,note):
-        if(note != self.noteFlag):
-            self.playboard.setNote(self.screen,number)
-            pygame.display.update()
-        elif(number == self.playboard.returnNumber()):
-            self.backspaceKey()
-        else:
-            if(self.playboard.saveNumber(number)):
-                self.playboard.writeNumber(self.screen,number)
-                self.playboard.checkCRB()
-                self.playboard.highlightDuplicates(self.screen)
+        if(self.playboard.isSelected()):
+            if(note != self.noteFlag):
+                self.playboard.setNote(self.screen,number)
                 pygame.display.update()
+            elif(number == self.playboard.returnNumber()):
+                self.backspaceKey()
+            else:
+                if(self.playboard.saveNumber(number)):
+                    self.playboard.writeNumber(self.screen,number)
+                    self.playboard.checkCRB()
+                    self.playboard.updateGrid(self.screen)
+                    pygame.display.update()
+        else:
+            return False
 
     def tabKey(self):
         self.playboard.resetSelected(self.screen)
@@ -102,7 +117,7 @@ class Controller:
         self.playboard.eraseNumberArray()
         if(self.playboard.gridArray[self.playboard.returnSelected(0)][self.playboard.returnSelected(1)].returnIfAny()):
             self.playboard.checkCRB()
-        self.playboard.highlightDuplicates(self.screen)
+        self.playboard.updateGrid(self.screen)
         pygame.display.update()
 
     #Utility functions

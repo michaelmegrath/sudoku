@@ -12,6 +12,12 @@ class Starter:
         self.shuffleAll()
         self.createStarter()
 
+    def newGame(self,difficulty = 2):
+        #self.answerGrid =self.copyGrid
+        self.shuffleAll()
+        self.createStarter(difficulty)
+
+
 
     def createStarter(self,difficulty = 2):
         x = random.randint(0,8)
@@ -32,7 +38,7 @@ class Starter:
                 self.grid[-1*(x+1)][-1*(y+1)] = 0
             x = random.randint(0,8)
             y = random.randint(0,8)
-
+        self.answerGrid = self.copyGrid
 
 
 

@@ -28,8 +28,10 @@ class GridGraphical:
     #coord, tuple of two ints(EG: 0,0 or 8,8), that are coordinates of the cell to draw the number to
     #color, tuple of three ints(each int must not surpass 255), color that the number drawn
     def drawNumber(self,screen,number,coord,color = 'darkgrey'):
+        if(coord == [-1,-1] or coord == (-1,-1)):
+            return False
         if(number == 0):
-            return None
+            return False
         if(color == 'red'):
             address = "img/Wrong" + str(number) + ".png"
         elif(color == 'black'):
@@ -38,6 +40,7 @@ class GridGraphical:
             address = "img/Written" + str(number) + ".png"
         image = pygame.image.load(address).convert_alpha()
         screen.blit(image,(coord[0]*const.CELLSIZE+self.widthBuffer,coord[1]*const.CELLSIZE+self.heightBuffer))
+        return True
 
         #label = const.NUFONT.render(str(number), False, color)
         #screen.blit(label,(coord[0]*const.CELLSIZE+((1/4)*const.CELLSIZE),coord[1]*const.CELLSIZE+((1/8)*const.CELLSIZE)))
@@ -64,18 +67,29 @@ class GridGraphical:
     #coord, tuple of two ints(EG: 0,0 or 8,8), that are coordinates of the cell to select
     #color, tuple of three ints(each int must not surpass 255), color that the cell will be
     def toggleSelect(self,screen,coord,color):
-        pygame.draw.rect(screen,color,((coord[0]*const.CELLSIZE+1)+self.widthBuffer,(coord[1]*const.CELLSIZE+1)+self.heightBuffer,const.CELLSIZE-1,const.CELLSIZE-1),0)
-        return None
+        if(coord == (-1,-1) or coord == [-1,-1]):
+            return False
+        else:
+            pygame.draw.rect(screen,color,((coord[0]*const.CELLSIZE+1)+self.widthBuffer,(coord[1]*const.CELLSIZE+1)+self.heightBuffer,const.CELLSIZE-1,const.CELLSIZE-1),0)
+            return True
 
     def drawNote(self,screen,coord,number):
-        location = (coord[0]*const.CELLSIZE + const.NOTESIZE*((number-1)%3)+self.widthBuffer,coord[1]*const.CELLSIZE + const.NOTESIZE*((number-1)-((number-1)%3))/3+self.heightBuffer)
-        address = "img/Note" + str(number) + ".png"
-        image = pygame.image.load(address).convert_alpha()
-        screen.blit(image,location)
+        if(coord == [-1,-1] or coord == (-1,-1)):
+            return False
+        else:
+            location = (coord[0]*const.CELLSIZE + const.NOTESIZE*((number-1)%3)+self.widthBuffer,coord[1]*const.CELLSIZE + const.NOTESIZE*((number-1)-((number-1)%3))/3+self.heightBuffer)
+            address = "img/Note" + str(number) + ".png"
+            image = pygame.image.load(address).convert_alpha()
+            screen.blit(image,location)
+            return True
 
     def eraseNote(self,screen,coord,number):
-        rectangle = (coord[0]*const.CELLSIZE + const.NOTESIZE*((number-1)%3) + 1+self.widthBuffer,coord[1]*const.CELLSIZE + const.NOTESIZE*((number-1)-((number-1)%3))/3 + 1+self.heightBuffer,const.NOTESIZE-1,const.NOTESIZE-1)
-        pygame.draw.rect(screen,const.BLUE,(rectangle))
+        if(coord == [-1,-1] or coord == (-1,-1)):
+            return False
+        else:
+            rectangle = (coord[0]*const.CELLSIZE + const.NOTESIZE*((number-1)%3) + 1+self.widthBuffer,coord[1]*const.CELLSIZE + const.NOTESIZE*((number-1)-((number-1)%3))/3 + 1+self.heightBuffer,const.NOTESIZE-1,const.NOTESIZE-1)
+            pygame.draw.rect(screen,const.BLUE,(rectangle))
+            return True
 
 
     def changeBuffer(self,wwidth,wheight):
@@ -108,9 +122,15 @@ class GridController:
         screen.fill(const.WHITE)
         self.gridgraph.drawGrid(screen)
         self.redrawNumbers(screen)
-        self.highlightDuplicates(screen)
+        self.updateGrid(screen)
         return None
 
+    def newGame(self,screen):
+        self.resetSelected(screen)
+        self.clearGrid(screen)
+        self.starters.newGame()
+        self.getStarters(screen)
+        self.updateGrid(screen)
 
     def changeBuffer(self,wwidth,wheight):
         self.widthBuffer = int((wwidth/2) - (4.5*const.CELLSIZE))
@@ -119,13 +139,13 @@ class GridController:
 
     #Selection functions
     def isSelected(self): #If there is a selected square return true else return false
-        if(self.selected == (-1,-1)):
+        if(self.selected == (-1,-1) or self.selected == [-1,-1]):
             return False
         else:
             return True
 
     def selectCell(self,x,screen): # Selects Cell
-        if(self.selected != (-1,-1)): # If there is something selected
+        if(self.selected != (-1,-1) or self.selected != [-1,-1]): # If there is something selected
             #undo graphical selection for current selection
             self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
         self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
@@ -135,45 +155,34 @@ class GridController:
         return None
 
     def moveSelected(self,direction,screen):
-        if(direction == 'l' and self.selected[0] > 0): #Left Arrow control
+        if(0<=self.selected[0]<9 and 0<=self.selected[1]<9):
             self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
-            self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
+            #self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
             self.redrawNotes(screen)
+            self.moveDirection(direction)
+            self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
+            self.updateGrid(screen)
+
+
+    def moveDirection(self,direction):
+        if(direction == 'l' and self.selected[0]>0):
             self.selected = (self.selected[0]-1,self.selected[1])
-            self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
-            self.highlightDuplicates(screen)
-            return None
-        if(direction == 'r' and self.selected[0] < 8): #Right Arrow control
-            self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
-            self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
-            self.redrawNotes(screen)
+        elif(direction == 'r' and self.selected[0]<8):
             self.selected = (self.selected[0]+1,self.selected[1])
-            self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
-            self.highlightDuplicates(screen)
-            return None
-        if(direction == 'u' and self.selected[1] > 0): #Up Arrow control
-            self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
-            self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
-            self.redrawNotes(screen)
+        elif(direction == 'u' and self.selected[1]>0):
             self.selected = (self.selected[0],self.selected[1]-1)
-            self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
-            self.highlightDuplicates(screen)
-            return None
-        if(direction == 'd' and self.selected[1] < 8):#Down Arrow control
-            self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
-            self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
-            self.redrawNotes(screen)
+        elif(direction == 'd' and self.selected[1]<8):
             self.selected = (self.selected[0],self.selected[1]+1)
-            self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
-            self.highlightDuplicates(screen)
-            return None
+        else:
+            pass
+
 
     #Number/Cell functions
     def writeNumber(self,screen,number,color = const.BLUE): #Write and save number OVERHAUL THIS FUNCTION
         if(self.gridArray[self.selected[0]][self.selected[1]].getNumber() != 0):
             self.gridArray[self.selected[0]][self.selected[1]].removeNotes()
             self.eraseNumberGrid(screen,color)
-        if(self.selected[0]<0 or self.selected[1]<0 or self.selected[0]>8 or self.selected[1]>8):
+        if(self.selected == (-1,-1)):
             return False
         if(self.gridArray[self.selected[0]][self.selected[1]].returnIfAny() == True):
             self.gridgraph.drawNumber(screen,number,self.selected,'red')
@@ -183,6 +192,8 @@ class GridController:
             self.gridgraph.drawNumber(screen,number,self.selected)
         return True
     def saveNumber(self,number):
+        if(self.selected == (-1,-1)):
+            return False
         if(self.gridArray[self.selected[0]][self.selected[1]].changeCell(number)):
             return True
         else:
@@ -274,11 +285,6 @@ class GridController:
         self.toggleList('r',self.selected[1])
         self.toggleList('b',self.returnSelectedBox())
 
-    def checkTotalBoard(self):
-        for i in range(0,9,1):
-            self.toggleList('c',i)
-            self.toggleList('r',i)
-            self.toggleList('b',i)
 
         return None
     def populateBoxArray(self,boxArray,index):
@@ -289,9 +295,14 @@ class GridController:
 
 
 
+    def clearGrid(self,screen):
+        for x in range(0,9,1):
+            for y in range(0,9,1):
+                self.gridArray[x][y].resetCell()
+                self.gridgraph.toggleSelect(screen,(x,y),const.WHITE)
 
-    #Highlight duplicates function
-    def highlightDuplicates(self,screen):
+
+    def updateGrid(self,screen):
         for x in range(0,9,1):
             for y in range(0,9,1):
                 if(self.gridArray[x][y].returnIfAny()):
@@ -301,6 +312,7 @@ class GridController:
                     self.gridgraph.toggleSelect(screen,(x,y),const.WHITE)
                     self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),'black')
                 else:
+                    #self.gridgraph.toggleSelect(screen,(x,y),const.WHITE)
                     self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y))
         if(self.gridArray[self.selected[0]][self.selected[1]].returnIfAny() and self.selected != (-1,-1)):
             self.gridgraph.toggleSelect(screen,(self.selected[0],self.selected[1]),const.BLUE)
@@ -347,19 +359,13 @@ class GridController:
                     self.gridgraph.drawNote(screen,coord,i+1)
 
     def resetSelected(self,screen):
-        if(self.selected != (-1,-1)): # If there is something selected
-            #undo graphical selection for current selection
+        if(self.selected != (-1,-1)):
             self.gridgraph.toggleSelect(screen,self.selected,const.WHITE)
         self.writeNumber(screen,self.gridArray[self.selected[0]][self.selected[1]].getNumber(),const.WHITE)
         self.redrawNotes(screen)
         self.selected = (0,0)
         self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
         return None
-#create debug functions
 
-    def isStarter(self):
-        for x in range(0,9,1):
-            for y in range(0,9,1):
-                print(self.gridArray[x][y].returnStarter())
 
 print("Finished")#terminal output

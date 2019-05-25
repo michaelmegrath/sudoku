@@ -10,12 +10,14 @@ class igMenu: #In Game Menu
         self.numberArray = []
         self.heightBuffer = 0
         self.widthBuffer = 0
+        self.leftMenu = []
+        self.rightMenu = []
         self.setNumberArray(screen)
         self.setMenuIcon(screen)
 
 
     def setNumberArray(self,screen):
-        height = int(10.75 * const.CELLSIZE) + self.heightBuffer
+        height = int(10.75 * const.CELLSIZE) + self.heightBuffer*2
         width = int(.25 * const.CELLSIZE) + self.widthBuffer
         self.numberArray.append(button.IconButton(1,screen,(width,height)))
         width += int(const.CELLSIZE * 1.5)
@@ -27,7 +29,14 @@ class igMenu: #In Game Menu
     def setTimer(self):
         pass
 
-    def setMenuIcon(self,screen):
+    def setBackIcon(self,screen):
+        height = int(const.NOTESIZE)
+        width = int(const.NOTESIZE)
+        self.menuIcon = button.IconButton(11,screen,(width,height))
+        return None
+
+    def setMenuIcon(self,screen):#Split function into close menu, and setMenuIcon
+
         if(self.menuOpen):
             return False
         else:
@@ -59,14 +68,28 @@ class igMenu: #In Game Menu
         elif(21 <= mpos[1] < 85):
             if(21 <= mpos[0] < 85):
                 return self.menuIcon.onClick()
+        elif(31+self.widthBuffer/2<=mpos[0]<31+self.widthBuffer/2+const.CELLSIZE*2):
+            return self.findMenuItem(mpos)
         else:
             pass
         return -1
+
+    def findMenuItem(self,mpos):
+        height = (2*const.CELLSIZE+self.heightBuffer)
+        for i in range(0,3,1):
+            if(height<mpos[1]<=height+2*const.CELLSIZE):
+                return i+12
+            height += 3*const.CELLSIZE
+        return -1
+
+
 
     def toggleMenu(self,screen):
         self.menuOpen = not self.menuOpen
         if(self.menuOpen):
             self.drawMenu(screen)
+            self.setBackIcon(screen)
+
         else:
             self.setMenuIcon(screen)
 
@@ -80,3 +103,16 @@ class igMenu: #In Game Menu
             height = int(10.5*const.CELLSIZE) + 1 + self.heightBuffer
             pygame.draw.rect(screen,const.LIGHTGREY,(0,0,width,height))
             pygame.draw.rect(screen,const.LIGHTGREY,(12*const.CELLSIZE+self.widthBuffer+1,0,width,height))
+            self.fillMenu(screen)
+
+
+    def isMenuOpen(self):
+        return self.menuOpen
+
+
+    def fillMenu(self,screen):
+        x = 31+self.widthBuffer/2
+        y = 2*const.CELLSIZE
+        for i in range(0,3,1):
+            self.leftMenu.append(button.MenuButton(i+12,screen,(x,y)))
+            y += 3*const.CELLSIZE

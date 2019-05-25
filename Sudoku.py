@@ -25,15 +25,18 @@ def main():
         mouseLocal = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.display.quit()
                 running = False
+                pygame.display.quit()
+
 
             elif event.type == pygame.VIDEORESIZE:
                 control.resizeWindow((event.w,event.h))
 
             #Selecting Cells w/ mouse
             elif event.type == pygame.MOUSEBUTTONUP:
-                control.mouseClick(mouseLocal)
+                if(not control.mouseClick(mouseLocal)):
+                    running = False
+
 
             elif event.type == pygame.KEYDOWN:
 

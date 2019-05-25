@@ -21,7 +21,19 @@ class GridGraphical:
     def __init__(self):
         self.heightBuffer = int(const.CELLSIZE*1.5)
         self.widthBuffer = int(const.CELLSIZE*3)
+        self.noteArray = []
+        self.writtenArray = []
+        self.starterArray = []
+        self.wrongArray = []
 
+
+
+    def loadImage(self):
+        for i in range(0,9,1):
+            self.noteArray.append(pygame.image.load("img/Note" + str(i+1) + ".png").convert_alpha())
+            self.writtenArray.append(pygame.image.load("img/Written" + str(i+1) + ".png").convert_alpha())
+            self.starterArray.append(pygame.image.load("img/Starter" + str(i+1) + ".png").convert_alpha())
+            self.wrongArray.append(pygame.image.load("img/Wrong" + str(i+1) + ".png").convert_alpha())
     #drawNumber draws the number to the pygame window the arguments are as follows:
     #screen, address, to a pygame window
     #number, int, to be printed
@@ -33,12 +45,11 @@ class GridGraphical:
         if(number == 0):
             return False
         if(color == 'red'):
-            address = "img/Wrong" + str(number) + ".png"
+            image = self.wrongArray[number-1]
         elif(color == 'black'):
-            address = "img/Starter" + str(number) + ".png"
+            image = self.starterArray[number-1]
         else:
-            address = "img/Written" + str(number) + ".png"
-        image = pygame.image.load(address).convert_alpha()
+            image = self.writtenArray[number-1]
         screen.blit(image,(coord[0]*const.CELLSIZE+self.widthBuffer,coord[1]*const.CELLSIZE+self.heightBuffer))
         return True
 
@@ -60,6 +71,7 @@ class GridGraphical:
         for y in range(self.heightBuffer,int(const.GRIDHEIGHT)+self.heightBuffer, int(const.BOXSIZE)):
             pygame.draw.line(screen, const.BLACK, (self.widthBuffer,y), (const.GRIDWIDTH+self.widthBuffer,y))
         pygame.draw.line(screen, const.BLACK,(self.widthBuffer,const.GRIDHEIGHT+self.heightBuffer),(const.GRIDWIDTH+self.widthBuffer,const.GRIDHEIGHT+self.heightBuffer))
+        self.loadImage()
         return None
 
     #toggleSelect paints the selected cell, its arguments are:
@@ -78,9 +90,7 @@ class GridGraphical:
             return False
         else:
             location = (coord[0]*const.CELLSIZE + const.NOTESIZE*((number-1)%3)+self.widthBuffer,coord[1]*const.CELLSIZE + const.NOTESIZE*((number-1)-((number-1)%3))/3+self.heightBuffer)
-            address = "img/Note" + str(number) + ".png"
-            image = pygame.image.load(address).convert_alpha()
-            screen.blit(image,location)
+            screen.blit(self.noteArray[number-1],location)
             return True
 
     def eraseNote(self,screen,coord,number):

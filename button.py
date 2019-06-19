@@ -50,3 +50,16 @@ class MenuButton(Button):
         else:
             return None
         return pygame.image.load(address).convert_alpha()
+
+
+class TopMenuButton(Button):
+    def loadImage(self,id):
+        if(id == 20):
+            pass
+        elif():
+            pass
+        elif():
+            pass
+        else:
+            return None
+        return pygame.image.load(address).convert_alpha()

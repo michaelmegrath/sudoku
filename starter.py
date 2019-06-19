@@ -13,6 +13,7 @@ class Starter:
         self.checker = sudokusolver.SudokuSolver()
         self.shuffleAll()
         self.createStarter()
+        self.hint = False
 
 
 
@@ -21,7 +22,11 @@ class Starter:
         self.createStarter(difficulty)
 
     def giveHint(self,coord):
-        return answerGrid[coord[0]][coord[1]]
+        if(not self.hint):
+            self.hint = True
+            return answerGrid[coord[0]][coord[1]]
+        else:
+            return 0
 
     def createStarter(self,difficulty = 1):
         x = random.randint(0,8)

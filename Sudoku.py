@@ -1,17 +1,16 @@
 import pygame
 import const
-import controller
+import gameController
 
 
 def main():
 
 
 
-    print("Running!")
     #Constructing Screen
     global screen
     screen = pygame.display.set_mode((int(const.WINDOWWIDTH+1), int(const.WINDOWHEIGHT+1)),pygame.RESIZABLE)
-    control = controller.Controller(screen)
+    gameControl = gameController.GameController(screen)
     clock = pygame.time.Clock()
 
     #TEST FUNCTIONS
@@ -21,7 +20,6 @@ def main():
     running = True #Variable for gameloop
     while running: #Main Loop
         clock.tick(15)
-
         mouseLocal = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -30,11 +28,11 @@ def main():
 
 
             elif event.type == pygame.VIDEORESIZE:
-                control.resizeWindow((event.w,event.h))
+                gameControl.resizeWindow((event.w,event.h))
 
             #Selecting Cells w/ mouse
             elif event.type == pygame.MOUSEBUTTONUP:
-                if(not control.mouseClick(mouseLocal)):
+                if(not gameControl.mouseClick(mouseLocal)):
                     running = False
 
 
@@ -42,34 +40,33 @@ def main():
 
                 #Arrow key Functionallity
                 if event.key == pygame.K_LEFT:
-                    control.arrowKey('l')
+                    gameControl.arrowKey('l')
                 if event.key == pygame.K_RIGHT:
-                    control.arrowKey('r')
+                    gameControl.arrowKey('r')
                 if event.key == pygame.K_UP:
-                    control.arrowKey('u')
+                    gameControl.arrowKey('u')
                 if event.key == pygame.K_DOWN:
-                    control.arrowKey('d')
+                    gameControl.arrowKey('d')
 
                 if event.key == pygame.K_TAB:
-                    control.tabKey()
+                    gameControl.tabKey()
 
                 #Number is pressed
                 if event.key >= pygame.K_1 and event.key <= pygame.K_9:
                     if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
-                        control.numberKey(event.key - 48,True) # K_1 = 49, so for the integer 1, subtract 48 (1 = 49 - 48)
+                        gameControl.numberKey(event.key - 48,True) # K_1 = 49, so for the integer 1, subtract 48 (1 = 49 - 48)
                     else:
-                        control.numberKey(event.key - 48,False)
+                        gameControl.numberKey(event.key - 48,False)
                 elif event.key >= pygame.K_KP1 and event.key <= pygame.K_KP9:
                     if(pygame.key.get_mods() & pygame.KMOD_SHIFT or pygame.key.get_mods() & pygame.KMOD_CAPS):
-                        control.numberKey(event.key - 256,True) # K_KP1 = 257, so for the integer 1, subtract 48 (1 = 257 - 256)
+                        gameControl.numberKey(event.key - 256,True) # K_KP1 = 257, so for the integer 1, subtract 48 (1 = 257 - 256)
                     else:
-                        control.numberKey(event.key - 256,False)
+                        gameControl.numberKey(event.key - 256,False)
 
                 #Delete Cell
                 if event.key == pygame.K_BACKSPACE:
-                    control.backspaceKey()
+                    gameControl.backspaceKey()
 
 
-    print("Sudoku Closed.")
 if __name__=='__main__':
     main()

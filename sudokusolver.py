@@ -31,7 +31,6 @@ class SudokuSolver:
         for i in range(x,x+3,1):
             for j in range(y,y+3,1):
                 box.append(grid[i][j])
-        print(box)
         return box.count(number)
 
     def beginnerRunThrough(self,grid,x,y):

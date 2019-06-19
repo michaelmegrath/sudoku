@@ -341,7 +341,7 @@ class GridController:
                     #self.gridgraph.drawNumber(screen,self.gridArray[x][y].getNumber(),(x,y),'black')
 
     def redrawNumbers(self,screen):
-        self.selected = [-1,-1]
+        self.selected = (-1,-1)
         for x in range(0,9,1):
             for y in range(0,9,1):
                 self.redrawNotes(screen,(x,y))
@@ -377,5 +377,12 @@ class GridController:
         self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
         return None
 
+    def getHint(self):
+        if(self.selected !=(-1,-1)):
+            if(self.gridArray[self.selected[0]][self.selected[1]].getNumber() == 0):
+                self.starters.giveHint(self.selected)
+                return True
+            else:
+                return False
 
 print("Finished")#terminal output

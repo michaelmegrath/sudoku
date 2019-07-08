@@ -26,7 +26,7 @@ class Controller:
         self.widthBuffer = (width / 2) - (1.5 * const.CELLSIZE)
         self.heightBuffer = (height / 2) - (4 * const.CELLSIZE)
         self.mainMenu.resizeMenu(self.widthBuffer,self.heightBuffer)
-        self.mainMenu.drawMenu(self.screen)
+        self.mainMenu.setMenu(self.screen)
 
     def mouseClick(self,mpos):
         return 1

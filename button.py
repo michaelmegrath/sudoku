@@ -55,11 +55,17 @@ class MenuButton(Button):
 class TopMenuButton(Button):
     def loadImage(self,id):
         if(id == 20):
-            pass
-        elif():
-            pass
-        elif():
-            pass
+            address = "img/Buttons/topNewgame.png"
+        elif(id == 21):
+            address = "img/Buttons/topLoadgame.png"
+        elif(id == 22):
+            address = "img/Buttons/topTutorial.png"
+        elif(id == 23):
+            address = "img/Buttons/topFreeplay.png"
+        elif(id == 24):
+            address = "img/Buttons/topSettings.png"
+        elif(id == 25):
+            address = "img/Buttons/topLeave.png"
         else:
             return None
         return pygame.image.load(address).convert_alpha()

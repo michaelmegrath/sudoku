@@ -23,10 +23,12 @@ class Controller:
         if(height < const.WINDOWHEIGHT):
             height = const.WINDOWHEIGHT
         surface = pygame.display.set_mode((int(width), int(height)),pygame.RESIZABLE)
-        self.widthBuffer = (width / 2) - (1.5 * const.CELLSIZE)
-        self.heightBuffer = (height / 2) - (4 * const.CELLSIZE)
+        self.widthBuffer = width - const.WINDOWWIDTH
+        self.heightBuffer = height - const.WINDOWHEIGHT
         self.mainMenu.resizeMenu(self.widthBuffer,self.heightBuffer)
-        self.mainMenu.setMenu(self.screen)
+        self.mainMenu.drawMenu(self.screen)
+        pygame.display.update()
+
 
     def mouseClick(self,mpos):
         return 1

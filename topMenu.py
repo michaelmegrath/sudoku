@@ -11,11 +11,19 @@ class TopMenu:
         self.heightBuffer = height
         return None
     def setMenu(self,screen):
-        width = int(7.5*const.NOTESIZE) + self.widthBuffer
-        height = 4*const.NOTESIZE + self.heightBuffer
+        width = int(6*const.CELLSIZE) + self.widthBuffer / 2
+        height = int(5*const.CELLSIZE) + self.heightBuffer / 2
         for i in range(0,6,1):
-            self.buttonArray.append(button.TopMenuButton(20+i,screen,(width,height+const.NOTESIZE*i*2)))
+            self.buttonArray.append(button.TopMenuButton(20+i,screen,(width,height+const.NOTESIZE*i*3)))
+        self.drawMenu(screen)
         return None
+
+    def drawMenu(self,screen):
+        screen.fill(const.WHITE)
+        width = int(6*const.CELLSIZE) + self.widthBuffer / 2
+        height = int(5*const.CELLSIZE) + self.heightBuffer / 2
+        for i in range(0,6,1):
+            self.buttonArray[i].displayButton(screen,(width,height+const.NOTESIZE*i*3))
 
     def findButton(self,mpos):
         pass

@@ -15,6 +15,10 @@ class Controller:
         self.mainMenu.setMenu(screen)
         pygame.display.update()
 
+    def drawWindow(self):
+        self.mainMenu.drawMenu(self.screen)
+        pygame.display.update()
+
     def resizeWindow(self,size):
         width = size[0]
         height = size[1]
@@ -26,16 +30,16 @@ class Controller:
         self.widthBuffer = width - const.WINDOWWIDTH
         self.heightBuffer = height - const.WINDOWHEIGHT
         self.mainMenu.resizeMenu(self.widthBuffer,self.heightBuffer)
-        self.mainMenu.drawMenu(self.screen)
-        pygame.display.update()
+        self.drawWindow()
 
 
     def mouseClick(self,mpos):
         catch = self.mainMenu.findButton(mpos)
         if(catch == 20):
-            print(catch)
-            Sudoku.Sudoku(self.screen)
-            return None
+            catch = Sudoku.Sudoku(self.screen)
+            if(catch == 13):
+                self.drawWindow()
+
         elif(catch == 21):
             print(catch)
             return None

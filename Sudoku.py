@@ -23,8 +23,7 @@ def Sudoku(screen):
         mouseLocal = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
-                pygame.display.quit()
+                return 25
 
 
             elif event.type == pygame.VIDEORESIZE:
@@ -32,10 +31,13 @@ def Sudoku(screen):
 
             #Selecting Cells w/ mouse
             elif event.type == pygame.MOUSEBUTTONUP:
-                if(not gameControl.mouseClick(mouseLocal)):
-                    running = False
-
-
+                catch = gameControl.mouseClick(mouseLocal)
+                if(catch == 25):
+                    return catch
+                elif(catch == 13):
+                    return catch
+                else:
+                    pass
             elif event.type == pygame.KEYDOWN:
 
                 #Arrow key Functionallity

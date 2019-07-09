@@ -51,8 +51,10 @@ class GameController:
             self.playboard.writeNumber(self.screen,self.playboard.returnNumber(),const.BLUE)
             self.playboard.redrawNotes(self.screen)
         else:
-            if(not self.igMenuClick(mpos)):
-                return False
+            catch = self.igMenuClick(mpos)
+            pygame.display.update()
+            return catch
+
 
         pygame.display.update()
         return True
@@ -60,7 +62,6 @@ class GameController:
     def igMenuClick(self,mpos):
         catch = self.outerMenu.findButton(mpos)
         menu = self.outerMenu.isMenuOpen()
-        print(catch)
         if(catch == 0 or catch == 11):
             self.outerMenu.toggleMenu(self.screen)
         elif(0<catch<10):
@@ -75,20 +76,25 @@ class GameController:
         elif(catch == 12 and menu):
             self.playboard.newGame(self.screen)
         elif(catch == 13 and menu):
-            pass
+            return 13
         elif(catch == 14 and menu):
-            return False
+            print(14)
+            return 25
         elif(catch == 15 and menu):
+            print(15)
             pass
         elif(catch == 16 and menu):
+            print(16)
             pass
         elif(catch == 17 and menu):
+            print(17)
             pass
         elif(catch == 18 and menu):
+            print(18)
             pass
         else:
             pass
-        return True
+        return 1
 
     def arrowKey(self,direction):
         if(self.playboard.isSelected()):

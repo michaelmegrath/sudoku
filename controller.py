@@ -32,4 +32,21 @@ class Controller:
 
     def mouseClick(self,mpos):
         catch = self.mainMenu.findButton(mpos)
-        return catch
+        if(catch == 20):
+            print(catch)
+            Sudoku.Sudoku(self.screen)
+            return None
+        elif(catch == 21):
+            print(catch)
+            return None
+        elif(catch == 22):
+            print(catch)
+            return None
+        elif(catch == 23):
+            print(catch)
+            return None
+        elif(catch == 24):
+            print(catch)
+            return None
+        else:
+            return catch

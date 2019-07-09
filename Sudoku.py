@@ -3,13 +3,13 @@ import const
 import gameController
 
 
-def main():
+def Sudoku(screen):
 
 
 
     #Constructing Screen
-    global screen
-    screen = pygame.display.set_mode((int(const.WINDOWWIDTH+1), int(const.WINDOWHEIGHT+1)),pygame.RESIZABLE)
+    #global screen
+    #screen = pygame.display.set_mode((int(const.WINDOWWIDTH+1), int(const.WINDOWHEIGHT+1)),pygame.RESIZABLE)
     gameControl = gameController.GameController(screen)
     clock = pygame.time.Clock()
 
@@ -68,5 +68,5 @@ def main():
                     gameControl.backspaceKey()
 
 
-if __name__=='__main__':
-    main()
+#if __name__=='__main__':
+#    main()

@@ -28,7 +28,7 @@ def main():
 
             #Selecting Cells w/ mouse
             elif event.type == pygame.MOUSEBUTTONUP:
-                if(not control.mouseClick(mouseLocal)):
+                if(control.mouseClick(mouseLocal) == 25):
                     running = False
 
 

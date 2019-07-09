@@ -31,4 +31,5 @@ class Controller:
 
 
     def mouseClick(self,mpos):
-        return 1
+        catch = self.mainMenu.findButton(mpos)
+        return catch

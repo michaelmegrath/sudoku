@@ -26,4 +26,8 @@ class TopMenu:
             self.buttonArray[i].displayButton(screen,(width,height+const.NOTESIZE*i*3))
 
     def findButton(self,mpos):
-        pass
+        if(mpos[0]>=const.CELLSIZE*6 + (self.widthBuffer/2)and mpos[0]<=const.CELLSIZE*9 + (self.heightBuffer/2)): #ADD BUFFERS!!!!!!!!
+            for i in range(0,6,1):
+                if(mpos[1] > int((5*const.CELLSIZE)+(i*63)) and mpos[1] <= int((5*const.CELLSIZE)+(i+1)*63)):
+                    print(i)
+        return None

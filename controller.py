@@ -39,7 +39,10 @@ class Controller:
             catch = Sudoku.Sudoku(self.screen)
             if(catch == 13):
                 self.drawWindow()
-
+            elif(catch == 25):
+                return catch
+            else:
+                pass
         elif(catch == 21):
             print(catch)
             return None

@@ -17,6 +17,7 @@ class GameController:
         pygame.display.update()
         self.playboard = grid.GridController(screen)
         self.playboard.render(screen)
+        self.playboard.newGame(screen)
         self.outerMenu = igmenu.igMenu(screen)
 
 

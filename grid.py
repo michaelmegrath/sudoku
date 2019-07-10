@@ -377,10 +377,12 @@ class GridController:
         self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
         return None
 
-    def getHint(self):
+    def getHint(self,screen):
         if(self.selected !=(-1,-1)):
             if(self.gridArray[self.selected[0]][self.selected[1]].getNumber() == 0):
-                self.starters.giveHint(self.selected)
+                catch = self.starters.giveHint(self.selected)
+                self.saveNumber(catch)
+                self.writeNumber(screen,catch)
                 return True
             else:
                 return False

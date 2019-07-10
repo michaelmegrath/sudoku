@@ -91,7 +91,7 @@ class GameController:
             print(17)
             pass
         elif(catch == 18 and menu):
-            print(18)
+            self.playboard.getHint(self.screen)
             pass
         else:
             pass

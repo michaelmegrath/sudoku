@@ -23,7 +23,7 @@ class Starter:
     def giveHint(self,coord):
         if(not self.hint):
             self.hint = True
-            return answerGrid[coord[0]][coord[1]]
+            return self.answerGrid[coord[0]][coord[1]]
         else:
             return 0
 

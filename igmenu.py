@@ -91,7 +91,8 @@ class igMenu: #In Game Menu
             for i in range(0,3,1):
                 if(height<mpos[1]<=height+2*const.CELLSIZE):
                     return i+16
-        
+                height += 2*const.CELLSIZE
+
         return -1
 
 

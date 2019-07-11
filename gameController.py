@@ -25,6 +25,8 @@ class GameController:
         self.widthBuffer = int(const.CELLSIZE*3)
         self.heightBuffer = int(const.CELLSIZE*1.5)
         self.noteFlag = False
+        self.actionLog = []
+
 
     def resizeWindow(self,size):
         width = size[0]
@@ -84,7 +86,7 @@ class GameController:
             print(15)
             pass
         elif(catch == 16 and menu):
-            print(16)
+            print(self.actionLog)
             pass
         elif(catch == 17 and menu):
             print(17)
@@ -112,7 +114,9 @@ class GameController:
             elif(number == self.playboard.returnNumber()):
                 self.backspaceKey()
             else:
+                catch = self.playboard.returnNumber()
                 if(self.playboard.saveNumber(number)):
+                    self.actionLog.insert(0,[number,catch,self.playboard.returnSelected(0),self.playboard.returnSelected(1)])
                     self.playboard.writeNumber(self.screen,number)
                     self.playboard.checkCRB()
                     self.playboard.updateGrid(self.screen)
@@ -127,6 +131,8 @@ class GameController:
         pygame.display.update()
 
     def backspaceKey(self):
+        if(0 != self.playboard.returnNumber()):
+            self.actionLog.insert(0,[0,self.playboard.returnNumber(),self.playboard.returnSelected(0),self.playboard.returnSelected(1)])
         self.playboard.eraseNumberGrid(self.screen)
         self.playboard.eraseNumberArray()
         if(self.playboard.gridArray[self.playboard.returnSelected(0)][self.playboard.returnSelected(1)].returnIfAny()):

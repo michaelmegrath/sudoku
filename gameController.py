@@ -79,7 +79,6 @@ class GameController:
         elif(catch == 13 and menu):
             return 13
         elif(catch == 14 and menu):
-            print(14)
             return 25
         elif(catch == 15 and menu):
             print(15)

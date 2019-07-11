@@ -120,7 +120,7 @@ class GridController:
 
     #Constructor & render functions
     def __init__(self,screen):
-        self.selected = (-1,-1)
+        self.selected = [-1,-1]
         self.starters = starter.Starter()
         self.gridgraph.drawGrid(screen)
         self.getStarters(screen)
@@ -163,6 +163,10 @@ class GridController:
         self.selected = (int((x[0]-self.widthBuffer)/const.CELLSIZE),int((x[1]-self.heightBuffer)/const.CELLSIZE))
         self.gridgraph.toggleSelect(screen,self.selected,const.BLUE)
         return None
+
+    def selectCoord(self,coord):
+        self.selected = coord
+
 
     def moveSelected(self,direction,screen):
         if(0<=self.selected[0]<9 and 0<=self.selected[1]<9):

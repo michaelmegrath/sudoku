@@ -84,16 +84,12 @@ class GameController:
             return 25
         elif(catch == 15 and menu):
             print(15)
-            pass
         elif(catch == 16 and menu):
-            print(self.actionLog)
-            pass
+            self.undo()
         elif(catch == 17 and menu):
             print(17)
-            pass
         elif(catch == 18 and menu):
             self.playboard.getHint(self.screen)
-            pass
         else:
             pass
         return 1
@@ -139,6 +135,21 @@ class GameController:
             self.playboard.checkCRB()
         self.playboard.updateGrid(self.screen)
         pygame.display.update()
+
+    def undo(self):
+        if(not self.actionLog):
+            return None
+        catch = self.actionLog.pop(0)
+        selected = [self.playboard.returnSelected(0),self.playboard.returnSelected(1)]
+        self.playboard.selectCoord([catch[2],catch[3]])
+        self.playboard.saveNumber(catch[1])
+        self.playboard.writeNumber(self.screen,catch[1],const.WHITE)
+        self.playboard.selectCoord([selected[0],selected[1]])
+        self.playboard.checkCRB()
+        self.playboard.updateGrid(self.screen)
+        pygame.display.update()
+
+
 
     #Utility functions
 

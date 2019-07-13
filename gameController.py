@@ -143,10 +143,14 @@ class GameController:
         selected = [self.playboard.returnSelected(0),self.playboard.returnSelected(1)]
         self.playboard.selectCoord([catch[2],catch[3]])
         self.playboard.saveNumber(catch[1])
-        self.playboard.writeNumber(self.screen,catch[1],const.WHITE)
-        self.playboard.selectCoord([selected[0],selected[1]])
-        self.playboard.checkCRB()
+        if(catch[1] == 0):
+            self.playboard.eraseNumberGrid(self.screen,const.WHITE)
+        else:
+            self.playboard.writeNumber(self.screen,catch[1],const.WHITE)
+        self.playboard.checkCRB()###THIS NNEEDS AN IF STATEMENT
         self.playboard.updateGrid(self.screen)
+        #self.playboard.eraseNumberGrid(self.screen,const.WHITE)
+        self.playboard.selectCoord([selected[0],selected[1]])
         pygame.display.update()
 
 

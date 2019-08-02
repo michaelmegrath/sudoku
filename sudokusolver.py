@@ -35,9 +35,14 @@ class SudokuSolver:
 
     def beginnerRunThrough(self,grid,x,y):
         if(self.onlyChoiceRule(grid,x,y)):
+            print("Only choice")
             pass
         #elif(False):
         elif(self.singlePossibilityRule(grid,x,y)):
+            print("Single Poss")
+            pass
+        elif(False and self.onlySquareRule(grid,x,y)):
+            print("Only square rule")
             pass
         else:
             return False
@@ -48,10 +53,6 @@ class SudokuSolver:
 
     def gridRunThrough(self,grid,level):
         for x in range(0,9,1):
-            '''temp = x
-            if(x>4):
-                temp = 8-x
-            for y in range(0,temp+1,1):'''
             for y in range(0,9,1):
                 if(self.beginnerRunThrough(grid,x,y)):
                     pass
@@ -93,6 +94,32 @@ class SudokuSolver:
             else:
                 return True
 
-    def onlySquareRule(self,grid):
+    def onlySquareRule(self,grid,x,y):
         if(grid[x][y] == 0):
-            return False
+            if(self.numberInRow(grid,y,0)==2):
+                for i in range(0,9,1):
+                    if(i == x):
+                        pass
+                    elif(grid[i][y]==0):
+                        if(self.singlePossibilityRule(grid,i,y)):
+                            return True
+                        else:
+                            pass
+                    else:
+                        pass
+            elif(grid[x].count(0)==2):
+                for i in range(0,9,1):
+                    if(i == y):
+                        pass
+                    elif(grid[x][i]==0):
+                        if(self.singlePossibilityRule(grid,x,i)):
+                            return True
+                        else:
+                            pass
+                    else:
+                        pass
+            elif(self.numberInBox(grid,self.boxIndex(x,y),0)==2):
+                pass
+            else:
+                pass
+        return False
